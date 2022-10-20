@@ -10,7 +10,7 @@ A video demo can be found [here](https://twitter.com/hckdotng/status/15831618642
 
 ## How to install
 
-⚠ Make sure beforehand that the environment variable `N8N_WEBHOOK_URL` is filled in and contains the domain of your instance, e.g. `https://example.com`
+⚠ Make sure beforehand that the environment variable `WEBHOOK_URL` is filled in and contains the domain of your instance, e.g. `https://example.com`
 
 ### Community Nodes (Recommended)
 
