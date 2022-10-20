@@ -1,0 +1,56 @@
+{
+	"name": "n8n-nodes-discord",
+	"version": "0.1.0",
+	"description": "nodes to trigger workflows from Discord or send interactive messages. Uses the components API which allows to create dialogs (e.g. attach buttons and wait for the user to click on them)",
+	"keywords": [
+		"n8n-community-node-package"
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/hckdotng/n8n-nodes-discord",
+	"author": {
+		"name": "hckdotng",
+		"url": "https://hck.ng"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hckdotng/n8n-nodes-discord.git"
+	},
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc && gulp",
+		"dev": "tsc --watch",
+		"format": "prettier nodes credentials --write",
+		"lint": "tslint -p tsconfig.json -c tslint.json && eslint nodes credentials package.json",
+		"lintfix": "tslint --fix -p tsconfig.json -c tslint.json && eslint nodes credentials package.json --fix"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"credentials": [
+			"dist/credentials/DiscordApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Discord/Discord.node.js",
+			"dist/nodes/Discord/DiscordTrigger.node.js"
+		]
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.6",
+		"@types/request-promise-native": "~1.0.15",
+		"@typescript-eslint/parser": "^5.29.0",
+		"gulp": "^4.0.2",
+		"n8n-core": "^0.125.0",
+		"n8n-workflow": "^0.107.0",
+		"prettier": "^2.7.1",
+		"tslint": "^6.1.2",
+		"typescript": "~4.6.0"
+	},
+	"dependencies": {
+		"@types/node-ipc": "^9.2.0",
+		"axios": "^0.27.2",
+		"discord.js": "^14.5.0",
+		"node-ipc": "^11.1.0",
+		"uid": "^2.0.1"
+	}
+}
