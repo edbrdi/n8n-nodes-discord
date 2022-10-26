@@ -52,7 +52,7 @@ const state: {
 	testMode: false,
 	clientId: '',
 	token: '',
-	webhookHost: process.env?.WEBHOOK_URL?.replace(/\/$/, '') || 'http://localhost:5678',
+	webhookHost: '',
 	triggers: {},
 	channels: {},
 	logs: [],

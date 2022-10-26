@@ -76,12 +76,23 @@ export class DiscordTrigger implements INodeType {
 	async trigger(this: ITriggerFunctions): Promise<undefined> {
 		const activationMode = this.getActivationMode() as 'activate' | 'update' | 'init' | 'manual';
 		if (activationMode !== 'manual') {
-			const webhookHost = this.getRestApiUrl().replace('/rest', '');
+			let webhookHost = '';
 
 			const credentials = (await this.getCredentials('discordApi').catch(
 				(e) => e,
 			)) as any as ICredentials;
 			await connection(credentials).catch((e) => e);
+
+			try {
+				const regex =
+					/^((http[s]?|ftp):\/\/)?\/?([^\/\.]+\.)*?([^\/\.]+\.[^:\/\s\.]{1,3}(\.[^:\/\s\.]{1,2})?(:\d+)?)($|\/)([^#?\s]+)?(.*?)?(#[\w\-]+)?$/gm;
+				let match;
+				while ((match = regex.exec(credentials.baseUrl)) != null) {
+					webhookHost = match[0];
+				}
+			} catch (e) {
+				console.log(e);
+			}
 
 			ipc.connectTo('bot', () => {
 				const { webhookId } = this.getNode();
@@ -112,9 +123,14 @@ export class DiscordTrigger implements INodeType {
 		const userId = input[0].json?.userId as string;
 		const content = input[0].json?.content as string;
 
-		await execution(executionId, placeholderId, channelId, credentials.apiKey, userId).catch(
-			(e) => e,
-		);
+		await execution(
+			executionId,
+			placeholderId,
+			channelId,
+			credentials.apiKey,
+			credentials.baseUrl,
+			userId,
+		).catch((e) => e);
 		const returnData: INodeExecutionData[] = [];
 		returnData.push({
 			json: { content, channelId, userId },

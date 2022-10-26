@@ -27,5 +27,13 @@ export class DiscordApi implements ICredentialType {
 			type: 'string',
 			default: '',
 		},
+		{
+			displayName: 'Base URL',
+			name: 'baseUrl',
+			description: 'The API URL of the n8n instance',
+			type: 'string',
+			default: '',
+			placeholder: 'https://n8n.example.com/api/v1',
+		},
 	];
 }

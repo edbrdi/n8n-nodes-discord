@@ -83,6 +83,7 @@ export interface IDiscordNodePromptParameters {
 	timeout: number;
 	placeholder: string;
 	apiKey: string;
+	baseUrl: string;
 	buttons: {
 		button?: {
 			value: string;
@@ -133,6 +134,7 @@ export class Discord implements INodeType {
 		});
 		nodeParameters.executionId = executionId;
 		nodeParameters.apiKey = credentials.apiKey;
+		nodeParameters.baseUrl = credentials.baseUrl;
 
 		if (nodeParameters.channelId || nodeParameters.executionId) {
 			// return the interaction result if there is one

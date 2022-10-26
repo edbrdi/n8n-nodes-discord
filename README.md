@@ -10,8 +10,6 @@ A video demo can be found [here](https://twitter.com/hckdotng/status/15831618642
 
 ## How to install
 
-⚠ Make sure beforehand that the environment variable `WEBHOOK_URL` is filled in and contains the domain of your instance, e.g. `https://example.com`
-
 ### Community Nodes (Recommended)
 
 1. Go to **Settings > Community Nodes**.
@@ -60,7 +58,7 @@ Once your bot is added to your server, you need to get the bot token and add it 
 
 ![](images/credentials-2.png)
 
-Save your credentials and got to **Settings > n8n API**, click **Create an API Key** or select the existing one, copy the key, reopen your Discord App credentials (**Credentials > Open**) and paste the key into the **n8n API key** field. Don't forget to save again.
+Save your credentials and got to **Settings > n8n API**, click **Create an API Key** or select the existing one, copy the key, reopen your Discord App credentials (**Credentials > Open**), paste the key into the **n8n API key** field and set your base URL (e.g. https://n8n.example.com/api/v1). Don't forget to save again.
 
 ![](images/n8n-api.png)
 
@@ -138,7 +136,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 
 ## Commands
 
-To help you create and debug you workflow with Discord Trigger/Send nodes, some commands have been registered to the bot.
+To help you create and debug your workflow with Discord Trigger/Send nodes, some commands have been registered to the bot.
 
 - `/logs`: Display the last logs stored in memory (max 100).
   - **With parameters**

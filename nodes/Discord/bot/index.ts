@@ -161,7 +161,9 @@ export default function () {
 			if (!state.login && !state.ready) {
 				state.login = true;
 				if (data.token && data.clientId) {
-					commands(data.token, data.clientId, client);
+					commands(data.token, data.clientId, client).catch((e) => {
+						addLog(`${e}`, client);
+					});
 					client
 						.login(data.token)
 						.then(() => {
@@ -177,6 +179,9 @@ export default function () {
 							ipc.server.emit(socket, 'credentials', 'error');
 							addLog(`credentials error`, client);
 						});
+				} else {
+					ipc.server.emit(socket, 'credentials', 'missing');
+					addLog(`credentials missing`, client);
 				}
 			} else if (state.login) {
 				ipc.server.emit(socket, 'credentials', 'login');
@@ -283,6 +288,7 @@ export default function () {
 										message.id,
 										channel.id,
 										nodeParameters.apiKey,
+										nodeParameters.baseUrl,
 									).catch((e) => e);
 									placeholderLoading(message, message.id, nodeParameters.placeholder);
 								}
@@ -497,7 +503,7 @@ export default function () {
 				};
 				if (data.placeholderId && data.apiKey) {
 					state.executionMatching[data.executionId].placeholderId = data.placeholderId;
-					state.executionMatching[data.executionId].apiKey = data.apiKey;
+					// state.executionMatching[data.executionId].apiKey = data.apiKey;
 					const checkExecution = async (
 						placeholderId: string,
 						executionId: string,
@@ -508,7 +514,7 @@ export default function () {
 							'X-N8N-API-KEY': apiKey,
 						};
 						const res = await axios
-							.get(`${state.webhookHost}/api/v1/executions/${executionId}`, { headers })
+							.get(`${data.baseUrl}/executions/${executionId}`, { headers })
 							.catch((e) => e);
 						if (res && res.data && res.data.finished === false && res.data.stoppedAt === null) {
 							setTimeout(() => {

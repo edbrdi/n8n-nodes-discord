@@ -8,6 +8,7 @@ export interface ICredentials {
 	clientId: string;
 	token: string;
 	apiKey: string;
+	baseUrl: string;
 }
 
 export const connection = (credentials: ICredentials): Promise<string> => {
@@ -25,12 +26,14 @@ export const connection = (credentials: ICredentials): Promise<string> => {
 
 			ipc.of.bot.on('credentials', (data: string) => {
 				clearTimeout(timeout);
-				if (['error', 'login', 'different'].includes(data)) {
-					reject(
-						data === 'error'
-							? 'Invalid credentials'
-							: `Already logging in${data === 'different' ? ' with different credentials' : ''}`,
-					);
+				if (data === 'error') {
+					reject('Invalid credentials');
+				} else if (data === 'missing') {
+					reject('Token or clientId missing');
+				} else if (data === 'login') {
+					reject('Already logging in');
+				} else if (data === 'different') {
+					resolve('Already logging in with different credentials');
 				} else resolve(data); // ready / already
 			});
 		});
@@ -232,6 +235,7 @@ export interface IExecutionData {
 	placeholderId: string;
 	channelId: string;
 	apiKey: string;
+	baseUrl: string;
 	userId?: string;
 }
 
@@ -240,6 +244,7 @@ export const execution = async (
 	placeholderId: string,
 	channelId: string,
 	apiKey: string,
+	baseUrl: string,
 	userId?: string,
 ): Promise<boolean> => {
 	return new Promise((resolve, reject) => {
@@ -250,6 +255,7 @@ export const execution = async (
 				placeholderId,
 				channelId,
 				apiKey,
+				baseUrl,
 				userId,
 			});
 			ipc.of.bot.on('execution', () => {
