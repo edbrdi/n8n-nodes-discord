@@ -76,7 +76,7 @@ export class DiscordTrigger implements INodeType {
 	async trigger(this: ITriggerFunctions): Promise<undefined> {
 		const activationMode = this.getActivationMode() as 'activate' | 'update' | 'init' | 'manual';
 		if (activationMode !== 'manual') {
-			let webhookHost = '';
+			let baseUrl = '';
 
 			const credentials = (await this.getCredentials('discordApi').catch(
 				(e) => e,
@@ -88,7 +88,7 @@ export class DiscordTrigger implements INodeType {
 					/^((http[s]?|ftp):\/\/)?\/?([^\/\.]+\.)*?([^\/\.]+\.[^:\/\s\.]{1,3}(\.[^:\/\s\.]{1,2})?(:\d+)?)($|\/)([^#?\s]+)?(.*?)?(#[\w\-]+)?$/gm;
 				let match;
 				while ((match = regex.exec(credentials.baseUrl)) != null) {
-					webhookHost = match[0];
+					baseUrl = match[1] + match[4];
 				}
 			} catch (e) {
 				console.log(e);
@@ -102,9 +102,10 @@ export class DiscordTrigger implements INodeType {
 					parameters[key] = this.getNodeParameter(key, '') as any;
 				});
 
+				console.log('emit baseUrl', baseUrl);
 				ipc.of.bot.emit('trigger', {
 					...parameters,
-					webhookHost,
+					baseUrl,
 					webhookId,
 					active: this.getWorkflow().active,
 				});

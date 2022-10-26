@@ -150,13 +150,14 @@ export const triggerWorkflow = async (
 	webhookId: string,
 	message: Message,
 	placeholderId: string,
+	baseUrl: string,
 ): Promise<boolean> => {
 	const headers = {
 		accept: 'application/json',
 	};
 	const res = await axios
 		.post(
-			`${state.webhookHost}/webhook${state.testMode ? '-test' : ''}/${webhookId}/webhook`,
+			`${baseUrl}/webhook${state.testMode ? '-test' : ''}/${webhookId}/webhook`,
 			{
 				content: message.content,
 				channelId: message.channelId,
@@ -166,10 +167,11 @@ export const triggerWorkflow = async (
 			{ headers },
 		)
 		.catch((e) => {
+			console.log(e);
 			if (state.triggers[webhookId] && !state.testMode) {
 				state.triggers[webhookId].active = false;
 				ipc.connectTo('bot', () => {
-					ipc.of.bot.emit('trigger', state.triggers[webhookId]);
+					ipc.of.bot.emit('trigger', { ...state.triggers[webhookId], baseUrl: state.baseUrl });
 				});
 			}
 		});

@@ -4,10 +4,9 @@ const state: {
 	testMode: boolean;
 	clientId: string;
 	token: string;
-	webhookHost: string;
+	baseUrl: string;
 	triggers: {
 		[key: string]: {
-			webhookHost?: string;
 			webhookId: string;
 			channelIds: string[];
 			roleIds: string[];
@@ -52,7 +51,7 @@ const state: {
 	testMode: false,
 	clientId: '',
 	token: '',
-	webhookHost: '',
+	baseUrl: '',
 	triggers: {},
 	channels: {},
 	logs: [],

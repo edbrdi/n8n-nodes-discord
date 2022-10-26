@@ -52,7 +52,6 @@ export default function () {
 	// the bot listen to all messages and check if it matches a referenced trigger
 	client.on('messageCreate', async (message) => {
 		if (message.author.bot) return;
-		console.log('messageCreate');
 		const userRoles = message.member?.roles.cache.map((role) => role.id);
 		const clientId = client.user?.id;
 		const botMention = message.mentions.users.some((user) => user.id === clientId);
@@ -83,6 +82,7 @@ export default function () {
 								trigger.webhookId,
 								message,
 								placeholderMatchingId,
+								state.baseUrl,
 							).catch((e) => e);
 							if (isEnabled && trigger.placeholder) {
 								const channel = client.channels.cache.get(message.channelId);
@@ -103,48 +103,52 @@ export default function () {
 
 	// the bot listen to all interactions and check if it matches a waiting prompt
 	client.on('interactionCreate', (interaction) => {
-		if (!interaction.isButton() && !interaction.isSelectMenu()) return;
-		const promptData = state.promptData[interaction.message.id];
-		const userRoles = (interaction.member?.roles as GuildMemberRoleManager).cache.map(
-			(role) => role.id,
-		);
+		try {
+			if (!interaction.isButton() && !interaction.isSelectMenu()) return;
+			const promptData = state.promptData[interaction.message.id];
+			const userRoles = (interaction.member?.roles as GuildMemberRoleManager).cache.map(
+				(role) => role.id,
+			);
 
-		// check user right & reply proper message
-		if (promptData.restrictToRoles) {
-			const hasRole = promptData.mentionRoles.some((role: string) => userRoles?.includes(role));
-			if (!hasRole) {
+			// check user right & reply proper message
+			if (promptData.restrictToRoles) {
+				const hasRole = promptData.mentionRoles.some((role: string) => userRoles?.includes(role));
+				if (!hasRole) {
+					interaction.reply({ content: `You are not allowed to do this`, ephemeral: true });
+					return;
+				}
+			}
+			const triggeringUserId = state.executionMatching[promptData.executionId]?.userId;
+			if (
+				promptData.restrictToTriggeringUser &&
+				triggeringUserId &&
+				interaction.user.id !== triggeringUserId
+			) {
 				interaction.reply({ content: `You are not allowed to do this`, ephemeral: true });
 				return;
 			}
-		}
-		const triggeringUserId = state.executionMatching[promptData.executionId]?.userId;
-		if (
-			promptData.restrictToTriggeringUser &&
-			triggeringUserId &&
-			interaction.user.id !== triggeringUserId
-		) {
-			interaction.reply({ content: `You are not allowed to do this`, ephemeral: true });
-			return;
-		}
 
-		// no restriction or user authorized
-		if (promptData && !promptData.value) {
-			const bt = interaction.isButton()
-				? promptData.buttons?.button.find((b: any) => b.value === interaction.customId)
-				: promptData.select?.select.find((b: any) => b.value === interaction.values[0]);
-			addLog(`User interact: ${bt.label}`, client);
-			promptData.value = interaction.isButton() ? interaction.customId : interaction.values[0];
-			promptData.userId = interaction.user.id;
-			promptData.channelId = interaction.message.channelId;
-			interaction.update({ components: [] });
-			const channel = client.channels.cache.get(interaction.message.channelId);
-			(channel as TextChannel).send(`<@${interaction.user.id}>: ` + bt.label);
-			setTimeout(async () => {
-				const message = await (channel as TextChannel).messages
-					.fetch(interaction.message.id)
-					.catch((e: any) => e);
-				if (message) message.edit({ content: promptData.content, components: [] });
-			}, 1000);
+			// no restriction or user authorized
+			if (promptData && !promptData.value) {
+				const bt = interaction.isButton()
+					? promptData.buttons?.button.find((b: any) => b.value === interaction.customId)
+					: promptData.select?.select.find((b: any) => b.value === interaction.values[0]);
+				addLog(`User interact: ${bt.label}`, client);
+				promptData.value = interaction.isButton() ? interaction.customId : interaction.values[0];
+				promptData.userId = interaction.user.id;
+				promptData.channelId = interaction.message.channelId;
+				interaction.update({ components: [] });
+				const channel = client.channels.cache.get(interaction.message.channelId);
+				(channel as TextChannel).send(`<@${interaction.user.id}>: ` + bt.label);
+				setTimeout(async () => {
+					const message = await (channel as TextChannel).messages
+						.fetch(interaction.message.id)
+						.catch((e: any) => e);
+					if (message) message.edit({ content: promptData.content, components: [] });
+				}, 1000);
+			}
+		} catch (e) {
+			addLog(`${e}`, client);
 		}
 	});
 
@@ -196,13 +200,13 @@ export default function () {
 
 		// when a trigger is activated or updated, we get the trigger data et parse it
 		// so when a message is received we can check if it matches a trigger
-		ipc.server.on('trigger', (data: any, socket: any) => {
+		ipc.server.on('trigger', (data: any) => {
 			addLog(`trigger ${data.webhookId} update`, client);
 			state.triggers[data.webhookId] = data;
 			state.channels = {};
+			state.baseUrl = data.baseUrl;
 			Object.keys(state.triggers).forEach((webhookId) => {
 				const parameters = state.triggers[webhookId];
-				if (parameters.webhookHost) state.webhookHost = parameters.webhookHost;
 				parameters.channelIds.forEach((channelId) => {
 					if (!state.channels[channelId] && parameters.active)
 						state.channels[channelId] = [parameters];
@@ -501,13 +505,14 @@ export default function () {
 					channelId: data.channelId,
 					...(data.userId ? { userId: data.userId } : {}),
 				};
-				if (data.placeholderId && data.apiKey) {
+				if (data.placeholderId && data.apiKey && data.baseUrl) {
 					state.executionMatching[data.executionId].placeholderId = data.placeholderId;
 					// state.executionMatching[data.executionId].apiKey = data.apiKey;
 					const checkExecution = async (
 						placeholderId: string,
 						executionId: string,
 						apiKey: string,
+						baseUrl: string,
 					) => {
 						const headers = {
 							accept: 'application/json',
@@ -519,14 +524,14 @@ export default function () {
 						if (res && res.data && res.data.finished === false && res.data.stoppedAt === null) {
 							setTimeout(() => {
 								if (state.placeholderMatching[placeholderId])
-									checkExecution(placeholderId, executionId, apiKey);
+									checkExecution(placeholderId, executionId, apiKey, baseUrl);
 							}, 3000);
 						} else {
 							delete state.placeholderMatching[placeholderId];
 							delete state.executionMatching[data.executionId];
 						}
 					};
-					checkExecution(data.placeholderId, data.executionId, data.apiKey);
+					checkExecution(data.placeholderId, data.executionId, data.apiKey, data.baseUrl);
 				}
 			}
 		});
