@@ -356,12 +356,19 @@ export default function () {
 										});
 									delete state.placeholderMatching[executionMatching.placeholderId];
 									if (message && message.edit) {
-										setTimeout(async () => {
-											await message.edit(sendObject as MessageEditOptions).catch((e: any) => {
-												addLog(`${e}`, client);
-											});
-											promptProcessing(message);
-										}, 900);
+										let t = 0;
+										const retry = async () => {
+											if (state.placeholderWaiting[executionMatching.placeholderId] && t < 10) {
+												t++;
+												setTimeout(() => retry(), 300);
+											} else {
+												await message.edit(sendObject as MessageEditOptions).catch((e: any) => {
+													addLog(`${e}`, client);
+												});
+												promptProcessing(message);
+											}
+										};
+										retry();
 										return;
 									}
 								}
@@ -474,12 +481,19 @@ export default function () {
 										});
 									delete state.placeholderMatching[executionMatching.placeholderId];
 									if (message && message.edit) {
-										setTimeout(async () => {
-											await message.edit(sendObject).catch((e: any) => {
-												addLog(`${e}`, client);
-											});
-											ipc.server.emit(socket, 'send:message', { channelId });
-										}, 1100);
+										let t = 0;
+										const retry = async () => {
+											if (state.placeholderWaiting[executionMatching.placeholderId] && t < 10) {
+												t++;
+												setTimeout(() => retry(), 300);
+											} else {
+												await message.edit(sendObject).catch((e: any) => {
+													addLog(`${e}`, client);
+												});
+												ipc.server.emit(socket, 'send:message', { channelId });
+											}
+										};
+										retry();
 										return;
 									}
 								}

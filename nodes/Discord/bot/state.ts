@@ -39,6 +39,9 @@ const state: {
 	placeholderMatching: {
 		[key: string]: string;
 	};
+	placeholderWaiting: {
+		[key: string]: boolean;
+	};
 	executionMatching: {
 		[key: string]: any;
 	};
@@ -58,6 +61,7 @@ const state: {
 	autoLogs: false,
 	autoLogsChannelId: '',
 	placeholderMatching: {},
+	placeholderWaiting: {},
 	executionMatching: {},
 	promptData: {},
 };
