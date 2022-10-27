@@ -26,15 +26,11 @@ export const connection = (credentials: ICredentials): Promise<string> => {
 
 			ipc.of.bot.on('credentials', (data: string) => {
 				clearTimeout(timeout);
-				if (data === 'error') {
-					reject('Invalid credentials');
-				} else if (data === 'missing') {
-					reject('Token or clientId missing');
-				} else if (data === 'login') {
-					reject('Already logging in');
-				} else if (data === 'different') {
-					resolve('Already logging in with different credentials');
-				} else resolve(data); // ready / already
+				if (data === 'error') reject('Invalid credentials');
+				else if (data === 'missing') reject('Token or clientId missing');
+				else if (data === 'login') reject('Already logging in');
+				else if (data === 'different') resolve('Already logging in with different credentials');
+				else resolve(data); // ready / already
 			});
 		});
 	});
