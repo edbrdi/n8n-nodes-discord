@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-discord",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "nodes to trigger workflows from Discord or send interactive messages. Uses the components API which allows to create dialogs (e.g. attach buttons and wait for the user to click on them)",
 	"keywords": [
 		"n8n",

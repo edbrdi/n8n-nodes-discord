@@ -85,10 +85,10 @@ export class DiscordTrigger implements INodeType {
 
 			try {
 				const regex =
-					/^((http[s]?|ftp):\/\/)?\/?([^\/\.]+\.)*?([^\/\.]+\.[^:\/\s\.]{1,3}(\.[^:\/\s\.]{1,2})?(:\d+)?)($|\/)([^#?\s]+)?(.*?)?(#[\w\-]+)?$/gm;
+					/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/img;
 				let match;
 				while ((match = regex.exec(credentials.baseUrl)) != null) {
-					baseUrl = match[1] + match[4];
+					baseUrl = match[0];
 				}
 			} catch (e) {
 				console.log(e);
@@ -102,7 +102,6 @@ export class DiscordTrigger implements INodeType {
 					parameters[key] = this.getNodeParameter(key, '') as any;
 				});
 
-				console.log('emit baseUrl', baseUrl);
 				ipc.of.bot.emit('trigger', {
 					...parameters,
 					baseUrl,

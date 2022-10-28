@@ -1,5 +1,11 @@
 # Changelog
 
+## Released (2022-10-26 0.1.3)
+
+### Bug Fixes
+
+- Fix subdomain regex
+
 ## Released (2022-10-26 0.1.2)
 
 ### New Features
