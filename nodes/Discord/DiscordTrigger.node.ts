@@ -85,7 +85,7 @@ export class DiscordTrigger implements INodeType {
 
 			try {
 				const regex =
-					/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/img;
+					/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^\/\n?]+)/img;
 				let match;
 				while ((match = regex.exec(credentials.baseUrl)) != null) {
 					baseUrl = match[0];

@@ -156,7 +156,7 @@ export const options: INodeProperties[] = [
 		description: '',
 	},
 	{
-		displayName: 'Author icon URL',
+		displayName: 'Author icon URL or base64',
 		name: 'authorIconUrl',
 		type: 'string',
 		required: false,
@@ -165,9 +165,12 @@ export const options: INodeProperties[] = [
 				embed: [true],
 				type: ['message'],
 			},
+			hide: {
+				authorName: [''],
+			},
 		},
 		default: '',
-		description: '',
+		description: 'URL/base64 of the image (png, jpg)',
 	},
 	{
 		displayName: 'Author URL',
@@ -178,6 +181,9 @@ export const options: INodeProperties[] = [
 			show: {
 				embed: [true],
 				type: ['message'],
+			},
+			hide: {
+				authorName: [''],
 			},
 		},
 		default: '',
@@ -198,7 +204,7 @@ export const options: INodeProperties[] = [
 		description: '',
 	},
 	{
-		displayName: 'Thumbnail URL',
+		displayName: 'Thumbnail URL or base64',
 		name: 'thumbnailUrl',
 		type: 'string',
 		required: false,
@@ -209,7 +215,7 @@ export const options: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: '',
+		description: 'URL/base64 of the image (png, jpg)',
 	},
 	{
 		displayName: 'Fields',
@@ -259,7 +265,7 @@ export const options: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Image URL',
+		displayName: 'Image URL or base64',
 		name: 'imageUrl',
 		type: 'string',
 		required: false,
@@ -270,7 +276,7 @@ export const options: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: '',
+		description: 'URL/base64 of the image (png, jpg)',
 	},
 	{
 		displayName: 'Buttons',
@@ -401,7 +407,7 @@ export const options: INodeProperties[] = [
 		description: '',
 	},
 	{
-		displayName: 'Footer icon URL',
+		displayName: 'Footer icon URL or base64',
 		name: 'footerIconUrl',
 		type: 'string',
 		required: false,
@@ -410,9 +416,12 @@ export const options: INodeProperties[] = [
 				embed: [true],
 				type: ['message'],
 			},
+			hide: {
+				footerText: [''],
+			},
 		},
 		default: '',
-		description: '',
+		description: 'URL/base64 of the image (png, jpg)',
 	},
 	{
 		displayName: 'Displayed date',
@@ -495,11 +504,11 @@ export const options: INodeProperties[] = [
 				displayName: 'File',
 				values: [
 					{
-						displayName: 'URL',
+						displayName: 'URL or base64',
 						name: 'url',
 						type: 'string',
 						default: '',
-						description: 'URL of the image to attach (png, jpg).',
+						description: 'URL/base64 of the image to attach (png, jpg).',
 					},
 				],
 			},

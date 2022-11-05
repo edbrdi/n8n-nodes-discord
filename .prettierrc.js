@@ -17,7 +17,7 @@ module.exports = {
 	/**
 	 * https://prettier.io/docs/en/options.html#tabs
 	 */
-	useTabs: true,
+	useTabs: false,
 
 	/**
 	 * https://prettier.io/docs/en/options.html#tab-width
