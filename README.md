@@ -83,6 +83,14 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **Bot mention**: If true, a message will also need to mention the bot to trigger the workflow (this does not exclude the other criteria).
 - **Placeholder**: The placeholder is a message that will appear in the channel that triggers the workflow. Three animated dots added to the placeholder indicate that the workflow is running. From a Discord Send node, you can set up a response message which will then take the place of this placeholder.
 
+### Returned data
+
+- **content**: The triggering message content.
+- **channelId**: The triggering channel ID.
+- **userId**: The triggering user ID.
+- **userName**: The triggering username.
+- **messageId**: The triggering message ID.
+
 ## Discord Send Node Reference
 
 - **Credential for Discord App**: If you followed the bot setup guide above, you will be able to select your Discord App credentials to start the bot. If you are already another Discord Trigger (or Send) node, be careful to select the same credentials. It's not meant at the moment to be used with multiple Discord Server.
@@ -98,21 +106,21 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
       - **Title** (2)
       - **URL** (3)
       - **Author name** (4)
-      - **Author icon URL** (5)
+      - **Author icon URL or base64** (5)
       - **Author URL** (6)
       - **Description** (7)
-      - **Thumbnail URL** (8)
+      - **Thumbnail URL or base64** (8)
       - **Fields** (9)
         - **Field**: If you add an empty field (no title/value) it will create a space in the embed.
           - **Title** (10)
           - **Value** (11)
           - **Inline** (12)
-      - **Image URL** (13)
+      - **Image URL or base64** (13)
       - **Footer text** (14)
-      - **Footer icon URL** (15)
+      - **Footer icon URL or base64** (15)
       - **Displayed date** (16)
     - **Files**: Allows to attach up to 5 images to the message.
-      - **URL**: URL of the image to attach (png, jpg).
+      - **URL or base64**: URL/base64 of the image to attach (png, jpg).
   - **Button Prompt**: It allows you to send an interactive dialog along with buttons users can click on. The workflow execution will wait untill someone answer.
     - **Content**: Displayed text message.
     - **Buttons**: Discord allows to add up to 5 buttons.
@@ -133,6 +141,14 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
     - Other parameters are the same as for button prompt.
 - **Mention roles**: Let you specify roles you want to mention in the message. Your credentials must be set and the bot running, you also need at least one role (apart from @everyone) available. If you do not meet these requirements, make the changes then close and reopen the modal.
 - **Placeholder**: Not available for simple messages. The placeholder is a message that will appear in the channel where the button or select prompt is displayed. Three animated dots added to the placeholder indicate that the workflow is running. From another Discord Send node, you can set up a response message which will then take the place of this placeholder.
+
+### Returned data
+
+- **value**: If type button/select prompt, return the value of the user selection.
+- **channelId**: The channel ID where the message is sent.
+- **userId**:  If type button/select prompt, return the ID of the interacting user.
+- **userName**:  If type button/select prompt, return the username of the interacting user.
+- **messageId**: The ID of the sent message.
 
 ## Commands
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## Next release
+
+### New Features
+
+- base64 on embeds & files
+- more context returned by executed nodes (trigger/send)
+
 ## Released (2022-10-26 0.1.3)
 
 ### Bug Fixes

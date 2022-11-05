@@ -137,7 +137,9 @@ export default function () {
         addLog(`User interact: ${bt.label}`, client);
         promptData.value = interaction.isButton() ? interaction.customId : interaction.values[0];
         promptData.userId = interaction.user.id;
+        promptData.userName = interaction.user.username;
         promptData.channelId = interaction.message.channelId;
+        promptData.messageId = interaction.message.id;
         interaction.update({ components: [] });
         const channel = client.channels.cache.get(interaction.message.channelId);
         (channel as TextChannel).send(`<@${interaction.user.id}>: ` + bt.label);
@@ -365,7 +367,7 @@ export default function () {
                   components: [row],
                 };
 
-                if (nodeParameters.triggerPlaceholder && executionMatching.placeholderId) {
+                if (nodeParameters.triggerPlaceholder && executionMatching?.placeholderId) {
                   const realPlaceholderId =
                     state.placeholderMatching[executionMatching.placeholderId];
                   if (realPlaceholderId) {
@@ -393,7 +395,7 @@ export default function () {
                     }
                   }
                 }
-                if (executionMatching.placeholderId)
+                if (executionMatching?.placeholderId)
                   delete state.placeholderMatching[executionMatching.placeholderId];
                 const message = await channel
                   .send(sendObject as MessageCreateOptions)
@@ -562,7 +564,10 @@ export default function () {
                           await message.edit(sendObject).catch((e: any) => {
                             addLog(`${e}`, client);
                           });
-                          ipc.server.emit(socket, 'send:message', { channelId });
+                          ipc.server.emit(socket, 'send:message', {
+                            channelId,
+                            messageId: message.id,
+                          });
                         }
                       };
                       retry();
@@ -570,10 +575,10 @@ export default function () {
                     }
                   }
                 }
-                await channel.send(sendObject).catch((e: any) => {
+                const message = (await channel.send(sendObject).catch((e: any) => {
                   addLog(`${e}`, client);
-                });
-                ipc.server.emit(socket, 'send:message', { channelId });
+                })) as Message;
+                ipc.server.emit(socket, 'send:message', { channelId, messageId: message.id });
               })
               .catch((e: any) => {
                 addLog(`${e}`, client);
