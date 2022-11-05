@@ -97,7 +97,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **Replace the trigger placeholder**: If active, the message produced by this node will replace the previous placeholder set. It can be a placeholder set by the Discord Trigger node or by another Discord Send node.
 - **Send to the trigger channel**: If active, the message produced will be sent to the same channel were the workflow was triggered (but not replace the placeholder if there is one).
 - **Send to**: Let you specify the text channels where you want to send the message. Your credentials must be set and the bot running, you also need at least one text channel available. If you do not meet these requirements, make the changes then close and reopen the modal (the channels list is loaded when the modal opens).
-- **Type**: Let you choose the type of interaction you want to send.
+- **Type**: Let you choose the type of interaction you want to perform.
 
   - **Message**: This is the default type, it allows you to send a message without requiering any form of response.
     - **Content**: Displayed text message.
@@ -139,6 +139,10 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
         - **Description**: Optional displayed description.
         - **Value**: Value returned by the node if selected.
     - Other parameters are the same as for button prompt.
+  - **Action**: Instead of sending a message, it will perform an action defined in the next field.
+    - **Action**: Let you choose the type of action you want to perform. More types will be added in the future.
+      - **Remove messages**: Remove last messages from the "send to" channel.
+        - **How many?**: Number of last messages to remove (Discord API allow max 150 and messages < 4 weeks old).
 - **Mention roles**: Let you specify roles you want to mention in the message. Your credentials must be set and the bot running, you also need at least one role (apart from @everyone) available. If you do not meet these requirements, make the changes then close and reopen the modal.
 - **Placeholder**: Not available for simple messages. The placeholder is a message that will appear in the channel where the button or select prompt is displayed. Three animated dots added to the placeholder indicate that the workflow is running. From another Discord Send node, you can set up a response message which will then take the place of this placeholder.
 
@@ -149,6 +153,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **userId**:  If type button/select prompt, return the ID of the interacting user.
 - **userName**:  If type button/select prompt, return the username of the interacting user.
 - **messageId**: The ID of the sent message.
+- **action**: If type action, return the action performed (at the moment the only available type is removeMessages).
 
 ## Commands
 

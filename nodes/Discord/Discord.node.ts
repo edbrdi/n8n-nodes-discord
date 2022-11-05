@@ -100,6 +100,17 @@ export interface IDiscordNodePromptParameters {
   };
 }
 
+export interface IDiscordNodeActionParameters {
+  executionId: string;
+  triggerPlaceholder: boolean;
+  triggerChannel: boolean;
+  channelId: string;
+  apiKey: string;
+  baseUrl: string;
+  actionType: string;
+  removeMessagesNumber: number;
+}
+
 export class Discord implements INodeType {
   description: INodeTypeDescription = nodeDescription;
 
@@ -139,7 +150,9 @@ export class Discord implements INodeType {
     if (nodeParameters.channelId || nodeParameters.executionId) {
       // return the interaction result if there is one
       const res = await ipcRequest(
-        `send:${nodeParameters.type === 'message' ? 'message' : 'prompt'}`,
+        `send:${
+          ['select', 'button'].includes(nodeParameters.type) ? 'prompt' : nodeParameters.type
+        }`,
         nodeParameters,
       ).catch((e) => {
         throw new Error(e);
@@ -152,6 +165,7 @@ export class Discord implements INodeType {
           userId: res?.userId,
           userName: res?.userName,
           messageId: res?.messageId,
+          action: res?.action,
         }, // todo: add triggeringUser if executed following a discord trigger
       });
     }

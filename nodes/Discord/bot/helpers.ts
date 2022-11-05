@@ -282,7 +282,7 @@ export const placeholderLoading = async (
     for (let j = 0; j < i; j++) content += '.';
 
     if (!state.placeholderMatching[placeholderMatchingId]) {
-      await placeholder.edit(txt);
+      await placeholder.edit(txt).catch((e: any) => e);
       delete state.placeholderWaiting[placeholderMatchingId];
       return;
     }
@@ -290,7 +290,7 @@ export const placeholderLoading = async (
     setTimeout(async () => {
       if (state.placeholderMatching[placeholderMatchingId]) waiting();
       else {
-        await placeholder.edit(txt);
+        await placeholder.edit(txt).catch((e: any) => e);
         delete state.placeholderWaiting[placeholderMatchingId];
       }
     }, 800);
