@@ -161,6 +161,7 @@ export const triggerWorkflow = async (
         placeholderId,
         userId: message.author.id,
         userName: message.author.username,
+        userTag: message.author.tag,
         messageId: message.id,
       },
       { headers },

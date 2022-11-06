@@ -128,7 +128,6 @@ export const options: INodeProperties[] = [
     displayName: 'Content',
     name: 'content',
     type: 'string',
-    required: true,
     displayOptions: {
       show: {
         type: ['message', 'button', 'select'],
@@ -138,7 +137,7 @@ export const options: INodeProperties[] = [
       rows: 4,
     },
     default: '',
-    description: 'Displayed text message.',
+    description: 'Displayed text message. Cannot be empty when using button/select prompt.',
   },
   {
     displayName: 'Embed',
@@ -617,7 +616,7 @@ export const options: INodeProperties[] = [
     },
     default: '',
     description:
-      'When you set a bot activity, it will be displayed in the "Now Playing" section of the bot profile.',
+      'When you set a bot activity, it will be displayed in the "Now Playing" section of the bot profile. You need to refresh the activity periodically if you want to keep it.',
   },
   {
     displayName: 'Bot activity type',

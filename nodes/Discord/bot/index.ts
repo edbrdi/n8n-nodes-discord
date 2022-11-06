@@ -143,16 +143,18 @@ export default function () {
         promptData.value = interaction.isButton() ? interaction.customId : interaction.values[0];
         promptData.userId = interaction.user.id;
         promptData.userName = interaction.user.username;
+        promptData.userTag = interaction.user.tag;
         promptData.channelId = interaction.message.channelId;
         promptData.messageId = interaction.message.id;
-        interaction.update({ components: [] });
+        interaction.update({ components: [] }).catch((e: any) => e);
         const channel = client.channels.cache.get(interaction.message.channelId);
         (channel as TextChannel).send(`<@${interaction.user.id}>: ` + bt.label);
         setTimeout(async () => {
           const message = await (channel as TextChannel).messages
             .fetch(interaction.message.id)
             .catch((e: any) => e);
-          if (message) message.edit({ content: promptData.content, components: [] });
+          if (message)
+            message.edit({ content: promptData.content, components: [] }).catch((e: any) => e);
         }, 1000);
       }
     } catch (e) {

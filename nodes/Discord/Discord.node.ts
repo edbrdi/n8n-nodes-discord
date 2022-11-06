@@ -168,6 +168,7 @@ export class Discord implements INodeType {
           channelId: res?.channelId,
           userId: res?.userId,
           userName: res?.userName,
+          userTag: res?.userTag,
           messageId: res?.messageId,
           action: res?.action,
         }, // todo: add triggeringUser if executed following a discord trigger

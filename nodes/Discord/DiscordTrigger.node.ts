@@ -121,6 +121,7 @@ export class DiscordTrigger implements INodeType {
     const channelId = input[0].json?.channelId as string;
     const userId = input[0].json?.userId as string;
     const userName = input[0].json?.userName as string;
+    const userTag = input[0].json?.userTag as string;
     const messageId = input[0].json?.messageId as string;
     const content = input[0].json?.content as string;
 
@@ -134,7 +135,7 @@ export class DiscordTrigger implements INodeType {
     ).catch((e) => e);
     const returnData: INodeExecutionData[] = [];
     returnData.push({
-      json: { content, channelId, userId, userName, messageId },
+      json: { content, channelId, userId, userName, userTag, messageId },
     });
     return this.prepareOutputData(returnData);
   }

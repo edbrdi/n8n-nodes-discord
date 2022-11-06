@@ -11,6 +11,8 @@
 
 ### Improvements/refactoring
 
+- You can now send embeds without "content"
+
 ### Bug Fixes
 
 - Error when using prompt if no placeholderId
