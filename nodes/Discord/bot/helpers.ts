@@ -196,6 +196,8 @@ export const ipcRequest = (type: string, parameters: any): Promise<any> => {
     ipc.config.retry = 1500;
     ipc.connectTo('bot', () => {
       ipc.of.bot.emit(type, parameters);
+      if (parameters.botCustomization && parameters.botActivity)
+        ipc.of.bot.emit('bot:status', parameters);
 
       ipc.of.bot.on(type, (data: any) => {
         resolve(data);

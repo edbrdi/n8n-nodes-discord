@@ -145,6 +145,10 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
         - **How many?**: Number of last messages to remove (Discord API allow max 150 and messages < 4 weeks old).
 - **Mention roles**: Let you specify roles you want to mention in the message. Your credentials must be set and the bot running, you also need at least one role (apart from @everyone) available. If you do not meet these requirements, make the changes then close and reopen the modal.
 - **Placeholder**: Not available for simple messages. The placeholder is a message that will appear in the channel where the button or select prompt is displayed. Three animated dots added to the placeholder indicate that the workflow is running. From another Discord Send node, you can set up a response message which will then take the place of this placeholder.
+- **Bot customizaion**: Active this option to customize the bot activity and status.
+  - **Bot activity**: When you set a bot activity, it will be displayed in the "Now Playing" section of the bot profile.
+  - **Bot activity type**: Let you customize the type of activity displayed on the bot profile.
+  - **Bot status**: Let you customize the status of the bot (if a bot activity is also set).
 
 ### Returned data
 

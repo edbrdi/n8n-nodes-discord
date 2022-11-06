@@ -151,7 +151,11 @@ export class Discord implements INodeType {
       // return the interaction result if there is one
       const res = await ipcRequest(
         `send:${
-          ['select', 'button'].includes(nodeParameters.type) ? 'prompt' : nodeParameters.type
+          ['select', 'button'].includes(nodeParameters.type)
+            ? 'prompt'
+            : nodeParameters.type === 'none'
+            ? 'action'
+            : nodeParameters.type
         }`,
         nodeParameters,
       ).catch((e) => {

@@ -20,6 +20,9 @@ export const options: INodeProperties[] = [
     type: 'boolean',
     required: false,
     displayOptions: {
+      show: {
+        type: ['message', 'button', 'select', 'action'],
+      },
       hide: {
         triggerPlaceholder: [true],
       },
@@ -39,6 +42,9 @@ export const options: INodeProperties[] = [
       show: {
         triggerPlaceholder: [false],
         triggerChannel: [false],
+      },
+      hide: {
+        type: ['none'],
       },
     },
     default: '',
@@ -73,6 +79,12 @@ export const options: INodeProperties[] = [
         description:
           'Instead of sending a message, it will perform an action defined in the next field.',
       },
+      {
+        name: 'None',
+        value: 'none',
+        description:
+          'Useful if you just want to clear a pending placeholder or update the bot status without any other action.',
+      },
     ],
     default: 'message',
     description: 'Let you choose the type of interaction you want to perform.',
@@ -104,6 +116,7 @@ export const options: INodeProperties[] = [
     required: true,
     displayOptions: {
       show: {
+        type: ['action'],
         actionType: ['removeMessages'],
       },
     },
@@ -583,5 +596,89 @@ export const options: INodeProperties[] = [
     default: '',
     description:
       'The placeholder is a message that will appear in the channel where the button or select prompt is displayed. Three animated dots added to the placeholder indicate that the workflow is running. From another Discord Send node, you can set up a response message which will then take the place of this placeholder.',
+  },
+  {
+    displayName: 'Bot customizaion',
+    name: 'botCustomization',
+    type: 'boolean',
+    required: false,
+    default: false,
+    description: 'Active this option to customize the bot activity and status.',
+  },
+  {
+    displayName: 'Bot activity',
+    name: 'botActivity',
+    type: 'string',
+    required: false,
+    displayOptions: {
+      show: {
+        botCustomization: [true],
+      },
+    },
+    default: '',
+    description:
+      'When you set a bot activity, it will be displayed in the "Now Playing" section of the bot profile.',
+  },
+  {
+    displayName: 'Bot activity type',
+    name: 'botActivityType',
+    required: false,
+    displayOptions: {
+      show: {
+        botCustomization: [true],
+      },
+    },
+    type: 'options',
+    options: [
+      {
+        name: 'Playing',
+        value: 0,
+      },
+      {
+        name: 'Streaming',
+        value: 1,
+      },
+      {
+        name: 'Listening',
+        value: 2,
+      },
+      {
+        name: 'Watching',
+        value: 3,
+      },
+    ],
+    default: 0,
+    description: 'Let you customize the type of activity displayed on the bot profile.',
+  },
+  {
+    displayName: 'Bot status',
+    name: 'botStatus',
+    required: false,
+    displayOptions: {
+      show: {
+        botCustomization: [true],
+      },
+    },
+    type: 'options',
+    options: [
+      {
+        name: 'Online',
+        value: 'online',
+      },
+      {
+        name: 'Idle',
+        value: 'idle',
+      },
+      {
+        name: 'Do not disturb',
+        value: 'dnd',
+      },
+      {
+        name: 'Invisible',
+        value: 'invisible',
+      },
+    ],
+    default: 'online',
+    description: 'Let you customize the status of the bot (if a bot activity is also set).',
   },
 ];

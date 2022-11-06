@@ -17,6 +17,7 @@ import {
   Message,
   MessageEditOptions,
   MessageCreateOptions,
+  PresenceStatusData,
 } from 'discord.js';
 import ipc from 'node-ipc';
 import { uid } from 'uid';
@@ -608,6 +609,11 @@ export default function () {
               channelId = executionMatching.channelId;
             else channelId = nodeParameters.channelId;
 
+            if (!channelId && !nodeParameters.actionType) {
+              ipc.server.emit(socket, 'send:action', false);
+              return;
+            }
+
             client.channels
               .fetch(channelId)
               .then(async (channel: Channel | null) => {
@@ -666,6 +672,26 @@ export default function () {
         } catch (e) {
           addLog(`${e}`, client);
           ipc.server.emit(socket, 'send:action', false);
+        }
+      },
+    );
+
+    ipc.server.on(
+      'bot:status',
+      async (
+        data: { botActivity: string; botActivityType: number; botStatus: PresenceStatusData },
+        socket: any,
+      ) => {
+        try {
+          ipc.server.emit(socket, 'bot:status', true);
+          if (state.ready) {
+            client.user?.setPresence({
+              activities: [{ name: data.botActivity, type: data.botActivityType }],
+              status: data.botStatus,
+            });
+          }
+        } catch (e) {
+          addLog(`${e}`, client);
         }
       },
     );

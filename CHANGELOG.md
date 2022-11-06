@@ -7,6 +7,7 @@
 - base64 on embeds & files
 - more context returned by executed nodes (trigger/send)
 - type "Action" added on the Discord Send node, with one action possible at the moment: "Remove messages"
+- bot customization (activity, activity type, status)
 
 ### Improvements/refactoring
 
