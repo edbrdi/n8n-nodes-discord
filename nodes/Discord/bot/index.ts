@@ -45,6 +45,11 @@ export default function () {
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.MessageContent,
+      GatewayIntentBits.GuildMembers,
+      GatewayIntentBits.GuildPresences,
+      GatewayIntentBits.GuildBans,
+      GatewayIntentBits.GuildMessageReactions,
+      GatewayIntentBits.GuildMessageTyping,
     ],
     allowedMentions: {
       parse: ['roles'],
@@ -55,10 +60,69 @@ export default function () {
     addLog(`Logged in as ${client.user?.tag}`, client);
   });
 
+  // listen to users changing their status events
+  client.on('presenceUpdate', (oldPresence, newPresence) => {
+    console.log('presenceUpdate', oldPresence, newPresence);
+    // userId, status (online, offline, idle, dnd)
+    // get roles ?
+  });
+
+  client.on('guildMemberUpdate', (oldMember, newMember) => {
+    console.log('guildMemberUpdate', oldMember, newMember);
+    // nickname, roles
+    // newMember.roles.cache.forEach((role) => {
+    //   console.log('role', role);
+    // });
+  });
+
+  // user joined a server
+  client.on('guildMemberAdd', (member) => {
+    console.log('member joined', member);
+    // userId
+    try {
+      if (member.user.bot || member.user.system) return;
+      Object.keys(state.channels).forEach((key) => {
+        const channel = state.channels[key];
+        channel.forEach(async (trigger) => {
+          if (trigger.type === 'userJoins') {
+            // key
+            addLog(`triggerWorkflow ${trigger.webhookId}`, client);
+            const placeholderMatchingId = trigger.placeholder ? uid() : '';
+            const isEnabled = await triggerWorkflow(
+              trigger.webhookId,
+              null,
+              placeholderMatchingId,
+              state.baseUrl,
+              member.user,
+              key,
+            ).catch((e) => e);
+            if (isEnabled && trigger.placeholder) {
+              const channel = client.channels.cache.get(key);
+              const placeholder = await (channel as TextChannel)
+                .send(trigger.placeholder)
+                .catch((e: any) => addLog(`${e}`, client));
+              if (placeholder)
+                placeholderLoading(placeholder, placeholderMatchingId, trigger.placeholder);
+            }
+          }
+        });
+      });
+    } catch (e) {
+      addLog(`${e}`, client);
+    }
+  });
+
+  // user leaving a server
+  client.on('guildMemberRemove', (member) => {
+    console.log('member leaving', member);
+    // user.id user.username user.discriminator user.bot (boolean) user.system (boolean)
+    console.log('roles', member.roles.cache);
+  });
+
   // the bot listen to all messages and check if it matches a referenced trigger
   client.on('messageCreate', async (message) => {
     try {
-      if (message.author.bot) return;
+      if (message.author.bot || message.author.system) return;
       const userRoles = message.member?.roles.cache.map((role) => role.id);
       const clientId = client.user?.id;
       const botMention = message.mentions.users.some((user) => user.id === clientId);
@@ -115,6 +179,11 @@ export default function () {
       const userRoles = (interaction.member?.roles as GuildMemberRoleManager).cache.map(
         (role) => role.id,
       );
+
+      // if not part of a dialog interaction
+      if (!promptData) {
+        return;
+      }
 
       // check user right & reply proper message
       if (promptData.restrictToRoles) {

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### New Features
+
+- Trigger: User join the server
+
+### Bug fixes
+
+- Bot crash when a non-administrator try to use bot "/" commands
+
 ## Released (2022-11-06 0.2.0)
 
 ### New Features

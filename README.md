@@ -69,28 +69,30 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 ## Discord Trigger Node Reference
 
 - **Credential for Discord App**: If you followed the bot setup guide above, you will be able to select your Discord App credentials to start the bot. If you are already another Discord Trigger (or Send) node, be careful to select the same credentials. It's not meant at the moment to be used with multiple Discord Server.
-- **Listen to**: Let you select the text channels you want to listen to for triggering the workflow. Your credentials must be set and the bot running, you also need at least one text channel available. If you do not meet these requirements, make the changes then close and reopen the modal (the channels list is loaded when the modal opens).
+- **Listen to**: Let you select the text channels you want to listen to for triggering the workflow. Your credentials must be set and the bot running, you also need at least one text channel available. If you do not meet these requirements, make the changes then close and reopen the modal (the channels list is loaded when the modal opens). For triggers "user joins/leaves", use any channel to trigger the workflow, if you want to use a placeholder, select the channel where you want it displayed.
 - **From roles**: The same logic apply here for roles, except it is optional. If you don't select any role it will listen to **@everyone**.
-- **Trigger type**: At the moment it's only triggered by messages but I planned to allow other types of events to be triggered to.
-- **Pattern**: Select how the value below will be recognized. ⚠ Keep in mind that the value will be tested with all mentions removed and a trim applied (whitespaces removed at the beginning and at the end). For example `@bot hello` will be tested on `hello`.
+- **Trigger type**: Type of event to listen to.
+  - **Message**: Listen to messages sent in the selected channels.
+  - **User joins**: Listen to users joining the server.
+- **Pattern**: Message only. Select how the value below will be recognized. ⚠ Keep in mind that the value will be tested with all mentions removed and a trim applied (whitespaces removed at the beginning and at the end). For example `@bot hello` will be tested on `hello`.
   - **Equals**: Match the exact same value.
   - **Starts with**: Match the message beginning with the specified value.
   - **Contains**: Match the value in any position in the message.
   - **Ends with**: Match the message ending with the specified value.
   - **Regex**: Match the custom ECMAScript regex provided.
-- **Value**: The value you will test on all messages listened to.
-- **Case Sensitive**: Determine if it will be sensible to the case when matching the value.
-- **Bot mention**: If true, a message will also need to mention the bot to trigger the workflow (this does not exclude the other criteria).
+- **Value**: Message only. The value you will test on all messages listened to.
+- **Case Sensitive**: Message only. Determine if it will be sensible to the case when matching the value.
+- **Bot mention**: Message only. If true, a message will also need to mention the bot to trigger the workflow (this does not exclude the other criteria).
 - **Placeholder**: The placeholder is a message that will appear in the channel that triggers the workflow. Three animated dots added to the placeholder indicate that the workflow is running. From a Discord Send node, you can set up a response message which will then take the place of this placeholder.
 
 ### Returned data
 
-- **content**: The triggering message content.
+- **content**: The triggering message content (if type message).
 - **channelId**: The triggering channel ID.
 - **userId**: The triggering user ID.
 - **userName**: The triggering username.
 - **userTag**: The triggering user tag.
-- **messageId**: The triggering message ID.
+- **messageId**: The triggering message ID (if type message).
 
 ## Discord Send Node Reference
 
