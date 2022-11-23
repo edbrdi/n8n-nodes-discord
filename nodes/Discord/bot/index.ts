@@ -77,8 +77,6 @@ export default function () {
 
   // user joined a server
   client.on('guildMemberAdd', (member) => {
-    console.log('member joined', member);
-    // userId
     try {
       if (member.user.bot || member.user.system) return;
       Object.keys(state.channels).forEach((key) => {
@@ -114,9 +112,42 @@ export default function () {
 
   // user leaving a server
   client.on('guildMemberRemove', (member) => {
-    console.log('member leaving', member);
-    // user.id user.username user.discriminator user.bot (boolean) user.system (boolean)
-    console.log('roles', member.roles.cache);
+    try {
+      if (member.user.bot || member.user.system) return;
+      const userRoles = member.roles.cache.map((role) => role.id);
+      Object.keys(state.channels).forEach((key) => {
+        const channel = state.channels[key];
+        channel.forEach(async (trigger) => {
+          if (trigger.roleIds.length) {
+            const hasRole = trigger.roleIds.some((role) => userRoles?.includes(role));
+            if (!hasRole) return;
+          }
+          if (trigger.type === 'userLeaves') {
+            // key
+            addLog(`triggerWorkflow ${trigger.webhookId}`, client);
+            const placeholderMatchingId = trigger.placeholder ? uid() : '';
+            const isEnabled = await triggerWorkflow(
+              trigger.webhookId,
+              null,
+              placeholderMatchingId,
+              state.baseUrl,
+              member.user,
+              key,
+            ).catch((e) => e);
+            if (isEnabled && trigger.placeholder) {
+              const channel = client.channels.cache.get(key);
+              const placeholder = await (channel as TextChannel)
+                .send(trigger.placeholder)
+                .catch((e: any) => addLog(`${e}`, client));
+              if (placeholder)
+                placeholderLoading(placeholder, placeholderMatchingId, trigger.placeholder);
+            }
+          }
+        });
+      });
+    } catch (e) {
+      addLog(`${e}`, client);
+    }
   });
 
   // the bot listen to all messages and check if it matches a referenced trigger

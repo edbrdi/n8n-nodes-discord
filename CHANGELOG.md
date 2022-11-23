@@ -4,7 +4,8 @@
 
 ### New Features
 
-- Trigger: User join the server
+- Trigger: User joins the server
+- Trigger: User leaves the server
 
 ### Bug fixes
 

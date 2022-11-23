@@ -74,6 +74,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **Trigger type**: Type of event to listen to.
   - **Message**: Listen to messages sent in the selected channels.
   - **User joins**: Listen to users joining the server.
+  - **User leaves**: Listen to users leaving the server.
 - **Pattern**: Message only. Select how the value below will be recognized. ⚠ Keep in mind that the value will be tested with all mentions removed and a trim applied (whitespaces removed at the beginning and at the end). For example `@bot hello` will be tested on `hello`.
   - **Equals**: Match the exact same value.
   - **Starts with**: Match the message beginning with the specified value.
