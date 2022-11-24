@@ -151,6 +151,8 @@ export const triggerWorkflow = async (
   user?: User,
   channelId?: string,
   presence?: string,
+  addedRoles?: string[],
+  removedRoles?: string[],
 ): Promise<boolean> => {
   const headers = {
     accept: 'application/json',
@@ -167,6 +169,8 @@ export const triggerWorkflow = async (
         userTag: message?.author.tag ?? user?.tag,
         messageId: message?.id,
         presence,
+        addedRoles,
+        removedRoles,
       },
       { headers },
     )

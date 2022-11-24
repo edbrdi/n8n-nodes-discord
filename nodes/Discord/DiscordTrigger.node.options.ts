@@ -19,7 +19,7 @@ export const options: INodeProperties[] = [
     type: 'multiOptions',
     displayOptions: {
       show: {
-        type: ['message', 'userLeaves', 'userPresenceUpdate'],
+        type: ['message', 'userLeaves', 'userPresenceUpdate', 'userRoleAdded', 'userRoleRemoved'],
       },
     },
     typeOptions: {
@@ -54,9 +54,35 @@ export const options: INodeProperties[] = [
         value: 'userPresenceUpdate',
         description: 'When a user presence is updated.',
       },
+      {
+        name: 'User role added',
+        value: 'userRoleAdded',
+        description: 'When a user role is added.',
+      },
+      {
+        name: 'User role removed',
+        value: 'userRoleRemoved',
+        description: 'When a user role is removed.',
+      },
     ],
     default: 'message',
     description: `Type of event to listen to.`,
+  },
+  {
+    displayName: 'Which roles',
+    name: 'roleUpdateIds',
+    required: false,
+    type: 'multiOptions',
+    displayOptions: {
+      show: {
+        type: ['userRoleAdded', 'userRoleRemoved'],
+      },
+    },
+    typeOptions: {
+      loadOptionsMethod: 'getRoles',
+    },
+    default: [],
+    description: `The same logic apply here for roles, except it is optional. If you don't select any role it will listen to @everyone.`,
   },
   {
     displayName: 'Presence',

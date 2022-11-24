@@ -7,6 +7,8 @@
 - Trigger: User joins the server
 - Trigger: User leaves the server
 - Trigger: User presence update
+- Trigger: User role added
+- Trigger: User role removed
 
 ### Bug fixes
 
