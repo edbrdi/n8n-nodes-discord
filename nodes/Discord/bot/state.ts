@@ -17,6 +17,7 @@ const state: {
 			botMention?: boolean;
 			placeholder?: string;
 			active: boolean;
+			presence?: string;
 		};
 	};
 	channels: {
@@ -30,6 +31,7 @@ const state: {
 				caseSensitive?: boolean;
 				botMention?: boolean;
 				placeholder?: string;
+				presence?: string;
 			},
 		];
 	};

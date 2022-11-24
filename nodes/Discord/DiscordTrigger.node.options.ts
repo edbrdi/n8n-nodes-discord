@@ -19,7 +19,7 @@ export const options: INodeProperties[] = [
     type: 'multiOptions',
     displayOptions: {
       show: {
-        type: ['message', 'userLeaves'],
+        type: ['message', 'userLeaves', 'userPresenceUpdate'],
       },
     },
     typeOptions: {
@@ -49,16 +49,61 @@ export const options: INodeProperties[] = [
         value: 'userLeaves',
         description: 'When a user leaves the server.',
       },
+      {
+        name: 'User presence update',
+        value: 'userPresenceUpdate',
+        description: 'When a user presence is updated.',
+      },
     ],
     default: 'message',
     description: `Type of event to listen to.`,
+  },
+  {
+    displayName: 'Presence',
+    name: 'presence',
+    required: false,
+    type: 'options',
+    displayOptions: {
+      show: {
+        type: ['userPresenceUpdate'],
+      },
+    },
+    options: [
+      {
+        name: 'Any change',
+        value: 'any',
+        description: 'When a user presence is updated.',
+      },
+      {
+        name: 'Online',
+        value: 'online',
+        description: 'When a user presence is set to online.',
+      },
+      {
+        name: 'Offline',
+        value: 'offline',
+        description: 'When a user presence is set to offline.',
+      },
+      {
+        name: 'Do not disturb',
+        value: 'dnd',
+        description: 'When a user presence is set to do not disturb.',
+      },
+      {
+        name: 'Idle',
+        value: 'idle',
+        description: 'When a user presence is set to idle.',
+      },
+    ],
+    default: 'any',
+    description: `Type of presence change to listen to.`,
   },
   {
     displayName: 'Pattern',
     name: 'pattern',
     required: false,
     type: 'options',
-		displayOptions: {
+    displayOptions: {
       show: {
         type: ['message'],
       },
@@ -97,7 +142,7 @@ export const options: INodeProperties[] = [
     displayName: 'Value',
     name: 'value',
     type: 'string',
-		displayOptions: {
+    displayOptions: {
       show: {
         type: ['message'],
       },
@@ -110,7 +155,7 @@ export const options: INodeProperties[] = [
     displayName: 'Case Sensitive',
     name: 'caseSensitive',
     type: 'boolean',
-		displayOptions: {
+    displayOptions: {
       show: {
         type: ['message'],
       },
@@ -123,7 +168,7 @@ export const options: INodeProperties[] = [
     displayName: 'Bot Mention',
     name: 'botMention',
     type: 'boolean',
-		displayOptions: {
+    displayOptions: {
       show: {
         type: ['message'],
       },

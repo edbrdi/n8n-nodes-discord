@@ -6,6 +6,7 @@
 
 - Trigger: User joins the server
 - Trigger: User leaves the server
+- Trigger: User presence update
 
 ### Bug fixes
 

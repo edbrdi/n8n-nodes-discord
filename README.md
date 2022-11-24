@@ -75,6 +75,13 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
   - **Message**: Listen to messages sent in the selected channels.
   - **User joins**: Listen to users joining the server.
   - **User leaves**: Listen to users leaving the server.
+  - **User presence udpate**: Listen to users presence change.
+- **Presence**: If trigger type presence update. Type of presence to listen to.
+  - **Any change**: When a user presence is updated.
+  - **Online**: When a user presence is set to online.
+  - **Offline**: When a user presence is set to offline.
+  - **Do not disturb**: When a user presence is set to do not disturb.
+  - **Idle**: When a user presence is set to idle.
 - **Pattern**: Message only. Select how the value below will be recognized. ⚠ Keep in mind that the value will be tested with all mentions removed and a trim applied (whitespaces removed at the beginning and at the end). For example `@bot hello` will be tested on `hello`.
   - **Equals**: Match the exact same value.
   - **Starts with**: Match the message beginning with the specified value.
@@ -94,6 +101,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **userName**: The triggering username.
 - **userTag**: The triggering user tag.
 - **messageId**: The triggering message ID (if type message).
+- **presence**: The triggering presence status (if type presence update).
 
 ## Discord Send Node Reference
 
