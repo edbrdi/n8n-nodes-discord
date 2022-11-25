@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## Released (2022-11-25 0.3.0)
 
 ### New Features
 
