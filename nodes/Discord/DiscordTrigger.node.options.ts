@@ -82,7 +82,7 @@ export const options: INodeProperties[] = [
       loadOptionsMethod: 'getRoles',
     },
     default: [],
-    description: `The same logic apply here for roles, except it is optional. If you don't select any role it will listen to @everyone.`,
+    description: `If you don't select any role it will listen to @everyone.`,
   },
   {
     displayName: 'Presence',

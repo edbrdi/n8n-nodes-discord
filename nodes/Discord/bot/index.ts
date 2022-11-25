@@ -18,6 +18,8 @@ import {
   MessageEditOptions,
   MessageCreateOptions,
   PresenceStatusData,
+  User,
+  GuildMember,
 } from 'discord.js';
 import ipc from 'node-ipc';
 import { uid } from 'uid';
@@ -812,6 +814,32 @@ export default function () {
                     await (channel as TextChannel)
                       .bulkDelete(nodeParameters.removeMessagesNumber)
                       .catch((e: any) => addLog(`${e}`, client));
+                  } else if (['addRole', 'removeRole'].includes(nodeParameters.actionType)) {
+                    await client.users
+                      .fetch(nodeParameters.userId as string)
+                      .then(async (user: User) => {
+                        await (channel as TextChannel).guild.members
+                          .fetch(user)
+                          .then((member: GuildMember) => {
+                            const roles = member.roles;
+                            nodeParameters.roleUpdateIds.forEach((roleId: string) => {
+                              if (
+                                !roles.cache.has(roleId) &&
+                                nodeParameters.actionType === 'addRole'
+                              )
+                                roles.add(roleId);
+                              else if (
+                                roles.cache.has(roleId) &&
+                                nodeParameters.actionType === 'removeRole'
+                              )
+                                roles.remove(roleId);
+                            });
+                          })
+                          .catch((e: any) => addLog(`${e}`, client));
+                      })
+                      .catch((e: any) => {
+                        addLog(`${e}`, client);
+                      });
                   }
                 };
 
@@ -825,7 +853,8 @@ export default function () {
                         addLog(`${e}`, client);
                       })) as any;
                     delete state.placeholderMatching[executionMatching.placeholderId];
-                    if (message && message.remove) {
+                    if (message && message.delete) {
+                      // delete message
                       let t = 0;
                       const retry = async () => {
                         if (state.placeholderWaiting[executionMatching.placeholderId] && t < 10) {
@@ -839,7 +868,7 @@ export default function () {
                           await performAction();
                           ipc.server.emit(socket, 'send:action', {
                             channelId,
-                            action: 'removeMessages',
+                            action: nodeParameters.actionType,
                           });
                         }
                       };
@@ -850,7 +879,10 @@ export default function () {
                 }
 
                 await performAction();
-                ipc.server.emit(socket, 'send:action', { channelId, action: 'removeMessages' });
+                ipc.server.emit(socket, 'send:action', {
+                  channelId,
+                  action: nodeParameters.actionType,
+                });
               })
               .catch((e: any) => {
                 addLog(`${e}`, client);

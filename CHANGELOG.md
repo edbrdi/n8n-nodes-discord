@@ -9,6 +9,8 @@
 - Trigger: User presence update
 - Trigger: User role added
 - Trigger: User role removed
+- Action : Add role to user
+- Action : Remove role from user
 
 ### Bug fixes
 

@@ -109,6 +109,8 @@ export interface IDiscordNodeActionParameters {
   baseUrl: string;
   actionType: string;
   removeMessagesNumber: number;
+  userId?: string;
+  roleUpdateIds: string[];
 }
 
 export class Discord implements INodeType {

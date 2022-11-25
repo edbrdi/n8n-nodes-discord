@@ -105,9 +105,50 @@ export const options: INodeProperties[] = [
         value: 'removeMessages',
         description: 'Remove last messages from the "send to" channel.',
       },
+      {
+        name: 'Add role to user',
+        value: 'addRole',
+        description: 'Add a role to a user.',
+      },
+      {
+        name: 'Remove role from user',
+        value: 'removeRole',
+        description: 'Remove a role from a user.',
+      },
     ],
     default: 'removeMessages',
     description: 'Let you choose the type of action you want to perform.',
+  },
+  {
+    displayName: 'User ID',
+    name: 'userId',
+    type: 'string',
+    required: true,
+    displayOptions: {
+      show: {
+        type: ['action'],
+        actionType: ['addRole', 'removeRole'],
+      },
+    },
+    default: '',
+    description: 'The ID of the user you want to add or remove the role from.',
+  },
+  {
+    displayName: 'Which roles',
+    name: 'roleUpdateIds',
+    required: true,
+    type: 'multiOptions',
+    displayOptions: {
+      show: {
+        type: ['action'],
+        actionType: ['addRole', 'removeRole'],
+      },
+    },
+    typeOptions: {
+      loadOptionsMethod: 'getRoles',
+    },
+    default: [],
+    description: `Let you specify the roles you want to add or remove from the user.`,
   },
   {
     displayName: 'How many?',
@@ -280,7 +321,7 @@ export const options: INodeProperties[] = [
     displayOptions: {
       show: {
         embed: [true],
-        type: ['message'],
+        type: ['message', 'action'],
       },
     },
     description: '',
