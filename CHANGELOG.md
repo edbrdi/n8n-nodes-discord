@@ -1,5 +1,11 @@
 # Changelog
 
+## Released (2022-11-26 0.3.1)
+
+### Bug fixes
+
+- User mention notifications are now sent
+
 ## Released (2022-11-25 0.3.0)
 
 ### New Features

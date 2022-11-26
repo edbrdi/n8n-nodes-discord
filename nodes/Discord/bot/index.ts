@@ -54,7 +54,7 @@ export default function () {
       GatewayIntentBits.GuildMessageTyping,
     ],
     allowedMentions: {
-      parse: ['roles'],
+      parse: ['roles', 'users', 'everyone'],
     },
   });
 
