@@ -548,9 +548,11 @@ export default function () {
                 }
 
                 let mentions = '';
-                nodeParameters.mentionRoles.forEach((role: string) => {
-                  mentions += ` <@&${role}>`;
-                });
+                if (nodeParameters.mentionRoles) {
+                  nodeParameters.mentionRoles.forEach((role: string) => {
+                    mentions += ` <@&${role}>`;
+                  });
+                }
 
                 let content = '';
                 if (nodeParameters.content) content += nodeParameters.content;
@@ -597,8 +599,10 @@ export default function () {
                   .catch((e: any) => {
                     addLog(`${e}`, client);
                   });
-                if (message && message.id) {
+                if (message && message.id && !nodeParameters.persistent) {
                   promptProcessing(message);
+                } else if (nodeParameters.persistent) {
+                  ipc.server.emit(socket, 'send:prompt', false);
                 }
               })
               .catch((e: any) => {

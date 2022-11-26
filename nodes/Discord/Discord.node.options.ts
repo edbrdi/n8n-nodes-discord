@@ -9,6 +9,7 @@ export const options: INodeProperties[] = [
     displayOptions: {
       hide: {
         triggerChannel: [true],
+        persistent: [true],
       },
     },
     default: false,
@@ -25,6 +26,7 @@ export const options: INodeProperties[] = [
       },
       hide: {
         triggerPlaceholder: [true],
+        persistent: [true],
       },
     },
     default: false,
@@ -39,11 +41,9 @@ export const options: INodeProperties[] = [
       loadOptionsMethod: 'getChannels',
     },
     displayOptions: {
-      show: {
-        triggerPlaceholder: [false],
-        triggerChannel: [false],
-      },
       hide: {
+        triggerPlaceholder: [true],
+        triggerChannel: [true],
         type: ['none'],
       },
     },
@@ -486,6 +486,23 @@ export const options: INodeProperties[] = [
     ],
   },
   {
+    displayName: 'Persistent',
+    name: 'persistent',
+    type: 'boolean',
+    displayOptions: {
+      show: {
+        type: ['button', 'select'],
+      },
+      hide: {
+        triggerPlaceholder: [true],
+        triggerChannel: [true],
+      },
+    },
+    required: false,
+    default: false,
+    description: 'If active the button will stay visible even when the workflow is done.',
+  },
+  {
     displayName: 'Footer text',
     name: 'footerText',
     type: 'string',
@@ -538,6 +555,9 @@ export const options: INodeProperties[] = [
       show: {
         type: ['button', 'select'],
       },
+      hide: {
+        persistent: [true],
+      },
     },
     default: 0,
     description: `Time (seconds) your workflow will wait until it passes to the next node (or stops the execution). The time left will be displayed and updated at the end of the text message. If the timeout is equal 0, it will wait indefinitely.`,
@@ -552,6 +572,7 @@ export const options: INodeProperties[] = [
       },
       hide: {
         restrictToRoles: [true],
+        persistent: [true],
       },
     },
     required: false,
@@ -569,6 +590,7 @@ export const options: INodeProperties[] = [
       },
       hide: {
         restrictToTriggeringUser: [true],
+        persistent: [true],
       },
     },
     required: false,
@@ -619,6 +641,9 @@ export const options: INodeProperties[] = [
       show: {
         type: ['message', 'button', 'select'],
       },
+      hide: {
+        persistent: [true],
+      },
     },
     default: [],
     description: `Let you specify roles you want to mention in the message. Your credentials must be set and the bot running, you also need at least one role (apart from @everyone) available. If you do not meet these requirements, make the changes then close and reopen the modal.`,
@@ -632,6 +657,9 @@ export const options: INodeProperties[] = [
       show: {
         type: ['button', 'select'],
       },
+      hide: {
+        persistent: [true],
+      },
     },
     default: '',
     description:
@@ -642,6 +670,11 @@ export const options: INodeProperties[] = [
     name: 'botCustomization',
     type: 'boolean',
     required: false,
+    displayOptions: {
+      hide: {
+        persistent: [true],
+      },
+    },
     default: false,
     description: 'Active this option to customize the bot activity and status.',
   },

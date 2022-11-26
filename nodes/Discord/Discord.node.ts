@@ -98,6 +98,7 @@ export interface IDiscordNodePromptParameters {
       description: string;
     }[];
   };
+  persistent: boolean;
 }
 
 export interface IDiscordNodeActionParameters {
