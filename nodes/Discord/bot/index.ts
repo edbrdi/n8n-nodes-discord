@@ -20,6 +20,7 @@ import {
   PresenceStatusData,
   User,
   GuildMember,
+  ComponentType,
 } from 'discord.js';
 import ipc from 'node-ipc';
 import { uid } from 'uid';
@@ -294,10 +295,79 @@ export default function () {
   client.on('interactionCreate', (interaction) => {
     try {
       if (!interaction.isButton() && !interaction.isSelectMenu()) return;
-      const promptData = state.promptData[interaction.message.id];
+
       const userRoles = (interaction.member?.roles as GuildMemberRoleManager).cache.map(
         (role) => role.id,
       );
+
+      Object.keys(state.channels).forEach((key) => {
+        const channel = state.channels[key];
+        channel.forEach(async (trigger) => {
+          if (
+            trigger.type === 'interaction' &&
+            trigger.interactionMessageId === interaction.message.id
+          ) {
+            if (trigger.roleIds.length) {
+              const hasRole = trigger.roleIds.some((role: string) => userRoles?.includes(role));
+              if (!hasRole) {
+                interaction.reply({ content: `You are not allowed to do this`, ephemeral: true });
+                return;
+              }
+            }
+
+            addLog(`triggerWorkflow ${trigger.webhookId}`, client);
+            const placeholderMatchingId = trigger.placeholder ? uid() : '';
+            const interactionValues = interaction.isButton()
+              ? [interaction.customId]
+              : interaction.values;
+            const isEnabled = await triggerWorkflow(
+              trigger.webhookId,
+              null,
+              placeholderMatchingId,
+              state.baseUrl,
+              interaction.user,
+              key,
+              undefined,
+              undefined,
+              undefined,
+              interaction.message.id,
+              interactionValues,
+              userRoles,
+            ).catch((e) => e);
+
+            const labels: string[] = [];
+
+            interaction.message.components.forEach((component) => {
+              component.components.forEach((element) => {
+                if (
+                  element.type === ComponentType.Button &&
+                  element.customId === interaction.customId
+                ) {
+                  if (element.label) labels.push(element.label);
+                } else if (element.type === ComponentType.SelectMenu) {
+                  element.options.forEach((option) => {
+                    // @ts-ignore
+                    if (interaction.values.includes(option.value)) labels.push(option.label);
+                  });
+                }
+              });
+            });
+
+            interaction.deferUpdate();
+
+            if (isEnabled && trigger.placeholder) {
+              const channel = client.channels.cache.get(key);
+              const placeholder = await (channel as TextChannel)
+                .send(trigger.placeholder)
+                .catch((e: any) => addLog(`${e}`, client));
+              if (placeholder)
+                placeholderLoading(placeholder, placeholderMatchingId, trigger.placeholder);
+            }
+          }
+        });
+      });
+
+      const promptData = state.promptData[interaction.message.id];
 
       // if not part of a dialog interaction
       if (!promptData) {
@@ -542,7 +612,9 @@ export default function () {
                   );
                   const select = new SelectMenuBuilder()
                     .setCustomId('select')
-                    .setPlaceholder('Nothing selected')
+                    .setPlaceholder('...')
+                    .setMinValues(nodeParameters.persistent ? nodeParameters.minSelect : 1)
+                    .setMaxValues(nodeParameters.persistent ? nodeParameters.maxSelect : 1)
                     .addOptions(options);
                   row = new ActionRowBuilder().addComponents(select);
                 }
@@ -594,15 +666,37 @@ export default function () {
                 }
                 if (executionMatching?.placeholderId)
                   delete state.placeholderMatching[executionMatching.placeholderId];
-                const message = await channel
-                  .send(sendObject as MessageCreateOptions)
-                  .catch((e: any) => {
-                    addLog(`${e}`, client);
-                  });
+
+                let message;
+
+                if (nodeParameters.updateMessageId) {
+                  const messageToEdit = await channel.messages
+                    .fetch(nodeParameters.updateMessageId)
+                    .catch((e: any) => {
+                      addLog(`${e}`, client);
+                    });
+                  if (messageToEdit && messageToEdit.edit) {
+                    message = await messageToEdit
+                      .edit(sendObject as MessageEditOptions)
+                      .catch((e: any) => {
+                        addLog(`${e}`, client);
+                      });
+                  }
+                } else {
+                  message = await channel
+                    .send(sendObject as MessageCreateOptions)
+                    .catch((e: any) => {
+                      addLog(`${e}`, client);
+                    });
+                }
+
                 if (message && message.id && !nodeParameters.persistent) {
                   promptProcessing(message);
-                } else if (nodeParameters.persistent) {
-                  ipc.server.emit(socket, 'send:prompt', false);
+                } else if (message && message.id && nodeParameters.persistent) {
+                  ipc.server.emit(socket, 'send:prompt', {
+                    channelId: channel.id,
+                    messageId: message.id,
+                  });
                 }
               })
               .catch((e: any) => {
@@ -826,7 +920,11 @@ export default function () {
                           .fetch(user)
                           .then((member: GuildMember) => {
                             const roles = member.roles;
-                            nodeParameters.roleUpdateIds.forEach((roleId: string) => {
+                            const roleUpdateIds =
+                              typeof nodeParameters.roleUpdateIds === 'string'
+                                ? nodeParameters.roleUpdateIds.split(',')
+                                : nodeParameters.roleUpdateIds;
+                            (roleUpdateIds ?? []).forEach((roleId: string) => {
                               if (
                                 !roles.cache.has(roleId) &&
                                 nodeParameters.actionType === 'addRole'

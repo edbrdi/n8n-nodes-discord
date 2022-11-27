@@ -500,7 +500,48 @@ export const options: INodeProperties[] = [
     },
     required: false,
     default: false,
-    description: 'If active the button will stay visible even when the workflow is done.',
+    description: 'If active the button/select will stay visible even when the workflow is done.',
+  },
+  {
+    displayName: 'Min select',
+    name: 'minSelect',
+    type: 'number',
+    required: true,
+    displayOptions: {
+      show: {
+        persistent: [true],
+        type: ['select'],
+      },
+    },
+    default: 0,
+    description: 'Minimum number of options that have to be selected.',
+  },
+  {
+    displayName: 'Max select',
+    name: 'maxSelect',
+    type: 'number',
+    required: true,
+    displayOptions: {
+      show: {
+        persistent: [true],
+        type: ['select'],
+      },
+    },
+    default: 1,
+    description: 'Maximum number of options that can be selected.',
+  },
+  {
+    displayName: 'Message ID',
+    name: 'updateMessageId',
+    type: 'string',
+    displayOptions: {
+      show: {
+        persistent: [true],
+      },
+    },
+    required: false,
+    default: '',
+    description: `The ID of the message to update. If not set the message will be send as new.`,
   },
   {
     displayName: 'Footer text',

@@ -153,10 +153,16 @@ export const triggerWorkflow = async (
   presence?: string,
   addedRoles?: string[],
   removedRoles?: string[],
+  interactionMessageId?: string,
+  interactionValues?: string[],
+  userRoles?: string[],
 ): Promise<boolean> => {
   const headers = {
     accept: 'application/json',
   };
+
+  console.log('webhoooooook', webhookId);
+
   const res = await axios
     .post(
       `${baseUrl}/webhook${state.testMode ? '-test' : ''}/${webhookId}/webhook`,
@@ -171,6 +177,9 @@ export const triggerWorkflow = async (
         presence,
         addedRoles,
         removedRoles,
+        interactionMessageId,
+        interactionValues,
+        userRoles,
       },
       { headers },
     )

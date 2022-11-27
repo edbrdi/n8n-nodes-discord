@@ -1,5 +1,12 @@
 # Changelog
 
+## Released (2022-11-27 0.4.0)
+
+### New Features
+
+- Trigger: Interaction
+- Send: Persistent button/select
+
 ## Released (2022-11-26 0.3.1)
 
 ### Bug fixes

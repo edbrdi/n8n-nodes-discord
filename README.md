@@ -73,6 +73,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **From roles**: The same logic apply here for roles, except it is optional. If you don't select any role it will listen to **@everyone**.
 - **Trigger type**: Type of event to listen to.
   - **Message**: Listen to messages sent in the selected channels.
+  - **Interaction**: Listen to persisted button/select.
   - **User joins**: Listen to users joining the server.
   - **User leaves**: Listen to users leaving the server.
   - **User presence udpate**: Listen to users presence change.
@@ -85,6 +86,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
   - **Do not disturb**: When a user presence is set to do not disturb.
   - **Idle**: When a user presence is set to idle.
 - **From roles**: When listening to user role update, select which removed or added role needs to be matched.
+- **Message ID**: If trigger type interaction. The message ID of the button/select to listen to.
 - **Pattern**: Message only. Select how the value below will be recognized. ⚠ Keep in mind that the value will be tested with all mentions removed and a trim applied (whitespaces removed at the beginning and at the end). For example `@bot hello` will be tested on `hello`.
   - **Equals**: Match the exact same value.
   - **Starts with**: Match the message beginning with the specified value.
@@ -107,6 +109,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **presence**: The triggering presence status (if type presence update).
 - **addedRoles**: The triggering added role (if type role added).
 - **removedRoles**: The triggering removed role (if type role removed).
+- **userRoles**: List of role ids of the triggering user (if trigger type intreaction).
 
 ## Discord Send Node Reference
 
@@ -166,6 +169,10 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
       - **Remove role from user**: Remove a role from a user.
         - **User ID**: User to remove the role from.
         - **Which roles**: Roles to remove from the user.
+- **Persitent**: Available for type prompt. If active the button/select will stay visible even when the workflow is done.
+  - **Min select**: Available for type select prompt. Minimum number of options that can be selected.
+  - **Max select**: Available for type select prompt. Maximum number of options that can be selected.
+  - **Message ID**: If you want to edit a previous prompt message intsead of create a new one, you can specify the message ID.
 - **Mention roles**: Let you specify roles you want to mention in the message. Your credentials must be set and the bot running, you also need at least one role (apart from @everyone) available. If you do not meet these requirements, make the changes then close and reopen the modal.
 - **Placeholder**: Not available for simple messages. The placeholder is a message that will appear in the channel where the button or select prompt is displayed. Three animated dots added to the placeholder indicate that the workflow is running. From another Discord Send node, you can set up a response message which will then take the place of this placeholder.
 - **Bot customizaion**: Active this option to customize the bot activity and status.

@@ -19,6 +19,7 @@ const state: {
       placeholder?: string;
       active: boolean;
       presence?: string;
+      interactionMessageId?: string;
     };
   };
   channels: {
@@ -34,6 +35,7 @@ const state: {
         botMention?: boolean;
         placeholder?: string;
         presence?: string;
+        interactionMessageId?: string;
       },
     ];
   };

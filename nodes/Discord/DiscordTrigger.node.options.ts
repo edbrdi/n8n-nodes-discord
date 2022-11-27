@@ -19,7 +19,14 @@ export const options: INodeProperties[] = [
     type: 'multiOptions',
     displayOptions: {
       show: {
-        type: ['message', 'userLeaves', 'userPresenceUpdate', 'userRoleAdded', 'userRoleRemoved'],
+        type: [
+          'message',
+          'userLeaves',
+          'userPresenceUpdate',
+          'userRoleAdded',
+          'userRoleRemoved',
+          'interaction',
+        ],
       },
     },
     typeOptions: {
@@ -38,6 +45,11 @@ export const options: INodeProperties[] = [
         name: 'Message',
         value: 'message',
         description: 'When a message is sent in the selected channels.',
+      },
+      {
+        name: 'Interaction',
+        value: 'interaction',
+        description: 'When a user interact with a persisted button/select.',
       },
       {
         name: 'User joins',
@@ -202,6 +214,19 @@ export const options: INodeProperties[] = [
     required: false,
     default: false,
     description: `If true, a message will also need to mention the bot to trigger the workflow (this does not exclude the other criteria).`,
+  },
+  {
+    displayName: 'Message ID',
+    name: 'interactionMessageId',
+    type: 'string',
+    displayOptions: {
+      show: {
+        type: ['interaction'],
+      },
+    },
+    required: true,
+    default: '',
+    description: `The message ID of the button/select to listen to.`,
   },
   {
     displayName: 'Placeholder',

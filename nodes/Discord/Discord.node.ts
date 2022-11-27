@@ -99,6 +99,9 @@ export interface IDiscordNodePromptParameters {
     }[];
   };
   persistent: boolean;
+  minSelect: number;
+  maxSelect: number;
+  updateMessageId: string;
 }
 
 export interface IDiscordNodeActionParameters {
@@ -111,7 +114,7 @@ export interface IDiscordNodeActionParameters {
   actionType: string;
   removeMessagesNumber: number;
   userId?: string;
-  roleUpdateIds: string[];
+  roleUpdateIds?: string[] | string;
 }
 
 export class Discord implements INodeType {
