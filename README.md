@@ -110,6 +110,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **addedRoles**: The triggering added role (if type role added).
 - **removedRoles**: The triggering removed role (if type role removed).
 - **userRoles**: List of role ids of the triggering user (if trigger type intreaction).
+- **attachments**: The triggering attachments array (if type message && attachments sent).
 
 ## Discord Send Node Reference
 
