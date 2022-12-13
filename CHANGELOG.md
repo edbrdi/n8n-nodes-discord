@@ -1,5 +1,11 @@
 # Changelog
 
+## Released (2022-12-13 0.4.1)
+
+### New Features
+
+- Trigger: Attachments field
+
 ## Released (2022-11-27 0.4.0)
 
 ### New Features
