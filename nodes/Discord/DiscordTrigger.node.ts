@@ -130,6 +130,7 @@ export class DiscordTrigger implements INodeType {
     const interactionMessageId = input[0].json?.interactionMessageId as string;
     const interactionValues = input[0].json?.interactionValues as string[];
     const userRoles = input[0].json?.userRoles as string[];
+    const attachments = input[0].json?.attachments as string[];
 
     await execution(
       executionId,
@@ -154,6 +155,7 @@ export class DiscordTrigger implements INodeType {
         interactionMessageId,
         interactionValues,
         userRoles,
+        attachments,
       },
     });
     return this.prepareOutputData(returnData);

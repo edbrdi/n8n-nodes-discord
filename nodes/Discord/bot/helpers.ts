@@ -174,6 +174,7 @@ export const triggerWorkflow = async (
         userName: message?.author.username ?? user?.username,
         userTag: message?.author.tag ?? user?.tag,
         messageId: message?.id,
+        attachments: message?.attachments,
         presence,
         addedRoles,
         removedRoles,
