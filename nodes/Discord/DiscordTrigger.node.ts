@@ -9,6 +9,7 @@ import {
   INodeExecutionData,
 } from 'n8n-workflow';
 import ipc from 'node-ipc';
+import { Attachment } from 'discord.js';
 import { options } from './DiscordTrigger.node.options';
 import {
   connection,
@@ -17,7 +18,6 @@ import {
   execution,
   ICredentials,
 } from './bot/helpers';
-import { Attachment } from 'discord.js';
 
 const nodeDescription: INodeTypeDescription = {
   displayName: 'Discord Trigger',
@@ -155,7 +155,7 @@ export class DiscordTrigger implements INodeType {
         interactionMessageId,
         interactionValues,
         userRoles,
-        ...(attachments.length ? { attachments } : {}),
+        ...(attachments?.length ? { attachments } : {}),
       },
     });
     return this.prepareOutputData(returnData);

@@ -1,5 +1,11 @@
 # Changelog
 
+## Released (2022-12-16 0.4.2)
+
+### Bug fixes
+
+- Fix attachments webhook checking
+
 ## Released (2022-12-13 0.4.1)
 
 ### New Features
