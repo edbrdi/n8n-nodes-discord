@@ -6,6 +6,9 @@
 
 ### Improvements/refactoring
 
+- bot/index.ts refactored into multiple files (discordClientEvents/*, ipcEvents/*)
+- Discord Send node will now loop over items
+
 ## Released (2022-12-16 0.4.2)
 
 ### Bug fixes

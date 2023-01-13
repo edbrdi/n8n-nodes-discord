@@ -145,43 +145,46 @@ export class Discord implements INodeType {
     });
 
     // execution
-    const nodeParameters: any = {};
-    Object.keys(this.getNode().parameters).forEach((key) => {
-      nodeParameters[key] = this.getNodeParameter(key, 0, '') as any;
-    });
-    nodeParameters.executionId = executionId;
-    nodeParameters.apiKey = credentials.apiKey;
-    nodeParameters.baseUrl = credentials.baseUrl;
-
-    if (nodeParameters.channelId || nodeParameters.executionId) {
-      // return the interaction result if there is one
-      const res = await ipcRequest(
-        `send:${
-          ['select', 'button'].includes(nodeParameters.type)
-            ? 'prompt'
-            : nodeParameters.type === 'none'
-            ? 'action'
-            : nodeParameters.type
-        }`,
-        nodeParameters,
-      ).catch((e) => {
-        throw new Error(e);
+    const items: INodeExecutionData[] = this.getInputData();
+    for (let itemIndex: number = 0; itemIndex < items.length; itemIndex++) {
+      const nodeParameters: any = {};
+      Object.keys(this.getNode().parameters).forEach((key) => {
+        nodeParameters[key] = this.getNodeParameter(key, itemIndex, '') as any;
       });
+      nodeParameters.executionId = executionId;
+      nodeParameters.apiKey = credentials.apiKey;
+      nodeParameters.baseUrl = credentials.baseUrl;
 
-      returnData.push({
-        json: {
-          value: res?.value,
-          channelId: res?.channelId,
-          userId: res?.userId,
-          userName: res?.userName,
-          userTag: res?.userTag,
-          messageId: res?.messageId,
-          action: res?.action,
-        }, // todo: add triggeringUser if executed following a discord trigger
-      });
+      if (nodeParameters.channelId || nodeParameters.executionId) {
+        // return the interaction result if there is one
+        const res = await ipcRequest(
+          `send:${
+            ['select', 'button'].includes(nodeParameters.type)
+              ? 'prompt'
+              : nodeParameters.type === 'none'
+              ? 'action'
+              : nodeParameters.type
+          }`,
+          nodeParameters,
+        ).catch((e) => {
+          throw new Error(e);
+        });
+
+        returnData.push({
+          json: {
+            value: res?.value,
+            channelId: res?.channelId,
+            userId: res?.userId,
+            userName: res?.userName,
+            userTag: res?.userTag,
+            messageId: res?.messageId,
+            action: res?.action,
+          }, // todo: add triggeringUser if executed following a discord trigger
+        });
+      }
+
+      if (nodeParameters.placeholder) await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-
-    if (nodeParameters.placeholder) await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return this.prepareOutputData(returnData);
   }
