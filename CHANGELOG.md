@@ -1,5 +1,11 @@
 # Changelog
 
+## Released (2023-01-?? 0.5.0)
+
+### New Features
+
+### Improvements/refactoring
+
 ## Released (2022-12-16 0.4.2)
 
 ### Bug fixes

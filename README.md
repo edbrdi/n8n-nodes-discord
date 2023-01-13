@@ -6,8 +6,6 @@
 
 These nodes do not use webhooks but a Discord bot to enable two-way communication. The bot automatically launches into a main process once configured and transmits or receives data from child processes when a node is executed.
 
-A video demo can be found [here](https://twitter.com/hckdotng/status/1583161864212865025).
-
 ## How to install
 
 ### Community Nodes (Recommended)
@@ -219,7 +217,7 @@ To help you create and debug your workflow with Discord Trigger/Send nodes, some
 
 MIT License
 
-Copyright (c) 2022 hck.ng
+Copyright (c) 2023 [[n8n](https://github.com/edbrdi)](https://github.com/edbrdi)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
