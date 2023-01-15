@@ -6,7 +6,7 @@
 
 ### Improvements/refactoring
 
-- bot/index.ts refactored into multiple files (discordClientEvents/*, ipcEvents/*)
+- bot/index.ts refactored into multiple files (discordClientEvents/..., ipcEvents/...)
 - Discord Send node will now loop over items
 - Triggers can ben listened from all (text) channels if none is specified
 

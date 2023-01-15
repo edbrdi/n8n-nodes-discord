@@ -96,6 +96,8 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **Bot mention**: Message only. If true, a message will also need to mention the bot to trigger the workflow (this does not exclude the other criteria).
 - **Placeholder**: The placeholder is a message that will appear in the channel that triggers the workflow. Three animated dots added to the placeholder indicate that the workflow is running. From a Discord Send node, you can set up a response message which will then take the place of this placeholder.
 
+/!\ Don't forget to activate your trigger, even if you just want to test it.
+
 ### Returned data
 
 - **content**: The triggering message content (if type message).
@@ -206,6 +208,12 @@ To help you create and debug your workflow with Discord Trigger/Send nodes, some
   - **With parameters**
     - `/test true`: Activate the test mode.
     - `/test false`: Disable the test mode.
+
+## Troubleshooting
+
+- There is a [known issue](https://github.com/edbrdi/n8n-nodes-discord/issues/10) with the updating process or some new install resulting in the Discord icon missing (nodes not recognized). To fix this issue, you just need to restart n8n.
+- If you can't update the nodes through the UI, try to uninstall and reinstall them.
+- Before raising an issue, make sure you have configured the bot properly (especially the permissions) and your triggers are activated. You can't test a non-activated trigger.
 
 ## Screenshots
 
