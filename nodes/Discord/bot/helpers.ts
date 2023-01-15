@@ -161,8 +161,6 @@ export const triggerWorkflow = async (
     accept: 'application/json',
   };
 
-  console.log('webhoooooook', webhookId);
-
   const res = await axios
     .post(
       `${baseUrl}/webhook${state.testMode ? '-test' : ''}/${webhookId}/webhook`,

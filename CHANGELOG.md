@@ -8,6 +8,7 @@
 
 - bot/index.ts refactored into multiple files (discordClientEvents/*, ipcEvents/*)
 - Discord Send node will now loop over items
+- Triggers can ben listened from all (text) channels if none is specified
 
 ## Released (2022-12-16 0.4.2)
 

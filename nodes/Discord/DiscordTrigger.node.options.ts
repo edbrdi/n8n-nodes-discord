@@ -4,13 +4,13 @@ export const options: INodeProperties[] = [
   {
     displayName: 'Listen to',
     name: 'channelIds',
-    required: true,
+    required: false,
     type: 'multiOptions',
     typeOptions: {
       loadOptionsMethod: 'getChannels',
     },
     default: [],
-    description: `Let you select the text channels you want to listen to for triggering the workflow. Your credentials must be set and the bot running, you also need at least one text channel available. If you do not meet these requirements, make the changes then close and reopen the modal (the channels list is loaded when the modal opens).`,
+    description: `Let you select the text channels you want to listen to for triggering the workflow. If none selected, all channels will be listen to. Your credentials must be set and the bot running, you also need at least one text channel available. If you do not meet these requirements, make the changes then close and reopen the modal (the channels list is loaded when the modal opens).`,
   },
   {
     displayName: 'From roles',
@@ -78,7 +78,7 @@ export const options: INodeProperties[] = [
       },
     ],
     default: 'message',
-    description: `Type of event to listen to.`,
+    description: `Type of event to listen to. User events must specify a channel to listen to if you want to use a placeholder or the option "send to the trigger channel" in a Discord Send node.`,
   },
   {
     displayName: 'Which roles',

@@ -16,6 +16,7 @@ export default {
 		return new SlashCommandBuilder()
 			.setName(name)
 			.setDescription('Delete messages')
+			.setDMPermission(false)
 			.addIntegerOption((option: SlashCommandIntegerOption) =>
 				option
 					.setName('input')

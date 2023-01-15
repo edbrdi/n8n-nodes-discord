@@ -38,7 +38,7 @@ export default async function (client: Client) {
               placeholderMatchingId,
               state.baseUrl,
               interaction.user,
-              key,
+              interaction.channelId,
               undefined,
               undefined,
               undefined,
