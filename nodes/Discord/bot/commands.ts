@@ -1,4 +1,11 @@
-import { Routes, GuildMember, PermissionResolvable, Interaction, Client } from 'discord.js';
+import {
+  Routes,
+  GuildMember,
+  PermissionResolvable,
+  Interaction,
+  Client,
+  RESTPostAPIApplicationCommandsJSONBody,
+} from 'discord.js';
 import { REST } from '@discordjs/rest';
 
 const imports = ['clear', 'test', 'logs'];
@@ -14,7 +21,12 @@ imports.forEach((commandName) => {
   awaitingCommands.push(command);
 });
 
-export default async function (token: string, clientId: string, client: Client) {
+export const registerCommands = async (
+  token: string,
+  clientId: string,
+  triggerCommands?: RESTPostAPIApplicationCommandsJSONBody[],
+) => {
+  console.log('registering commands');
   const commands = await Promise.all(awaitingCommands).catch((e) => e);
 
   // commands deployment
@@ -23,12 +35,19 @@ export default async function (token: string, clientId: string, client: Client) 
   const parsedCommands = commands.map((e: any) => {
     return e.default.registerCommand().toJSON();
   });
+  if (triggerCommands) parsedCommands.push(...triggerCommands);
 
   rest
     .put(Routes.applicationCommands(clientId), {
       body: parsedCommands,
     })
     .catch(console.error);
+
+  return commands;
+};
+
+export default async function (token: string, clientId: string, client: Client) {
+  const commands = await registerCommands(token, clientId);
 
   // commands execution
   client.on('interactionCreate', async (interaction: Interaction) => {

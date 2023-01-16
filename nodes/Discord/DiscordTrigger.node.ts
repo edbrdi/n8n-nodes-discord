@@ -106,6 +106,7 @@ export class DiscordTrigger implements INodeType {
           baseUrl,
           webhookId,
           active: this.getWorkflow().active,
+          credentials
         });
       });
     }

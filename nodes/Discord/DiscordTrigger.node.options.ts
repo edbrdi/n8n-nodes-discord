@@ -21,6 +21,7 @@ export const options: INodeProperties[] = [
       show: {
         type: [
           'message',
+          'command',
           'userLeaves',
           'userPresenceUpdate',
           'userRoleAdded',
@@ -45,6 +46,11 @@ export const options: INodeProperties[] = [
         name: 'Message',
         value: 'message',
         description: 'When a message is sent in the selected channels.',
+      },
+      {
+        name: 'Command',
+        value: 'command',
+        description: 'When a command is sent in the selected channels.',
       },
       {
         name: 'Interaction',
@@ -188,6 +194,32 @@ export const options: INodeProperties[] = [
     required: true,
     default: '',
     description: 'The value you will test on all messages listened to.',
+  },
+  {
+    displayName: 'Name',
+    name: 'name',
+    type: 'string',
+    displayOptions: {
+      show: {
+        type: ['command'],
+      },
+    },
+    required: true,
+    default: '',
+    description: `The name of the command you want to listen to (use only alphanumeric characters). If the command don't show up in Discord, check if the trigger is active and restart your Discord client.`,
+  },
+  {
+    displayName: 'Description',
+    name: 'description',
+    type: 'string',
+    displayOptions: {
+      show: {
+        type: ['command'],
+      },
+    },
+    required: false,
+    default: '',
+    description: `The description of the command you want to listen to.`,
   },
   {
     displayName: 'Case Sensitive',

@@ -14,6 +14,8 @@ const state: {
       type: string;
       pattern?: string;
       value?: string;
+      name?: string;
+      description?: string;
       caseSensitive?: boolean;
       botMention?: boolean;
       placeholder?: string;
@@ -31,6 +33,8 @@ const state: {
         type: string;
         pattern?: string;
         value?: string;
+        name?: string;
+        description?: string;
         caseSensitive?: boolean;
         botMention?: boolean;
         placeholder?: string;

@@ -225,7 +225,7 @@ To help you create and debug your workflow with Discord Trigger/Send nodes, some
 
 MIT License
 
-Copyright (c) 2023 [[n8n](https://github.com/edbrdi)](https://github.com/edbrdi)
+Copyright (c) 2023 [https://github.com/edbrdi](https://github.com/edbrdi)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
