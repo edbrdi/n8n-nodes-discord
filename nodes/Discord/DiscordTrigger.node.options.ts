@@ -217,9 +217,77 @@ export const options: INodeProperties[] = [
         type: ['command'],
       },
     },
-    required: false,
+    required: true,
     default: '',
     description: `The description of the command you want to listen to.`,
+  },
+  {
+    displayName: 'Input field type',
+    name: 'commandFieldType',
+    required: true,
+    type: 'options',
+    displayOptions: {
+      show: {
+        type: ['command'],
+      },
+    },
+    options: [
+      {
+        name: 'None',
+        value: 'none',
+        description: '',
+      },
+      {
+        name: 'Text',
+        value: 'text',
+        description: '',
+      },
+      {
+        name: 'Number',
+        value: 'number',
+        description: '',
+      },
+      {
+        name: 'Integer',
+        value: 'integer',
+        description: '',
+      },
+      {
+        name: 'Boolean',
+        value: 'boolean',
+        description: '',
+      },
+    ],
+    default: 'none',
+    description: `The type of the input field.`,
+  },
+  {
+    displayName: 'Input field description',
+    name: 'commandFieldDescription',
+    type: 'string',
+    displayOptions: {
+      show: {
+        type: ['command'],
+        commandFieldType: ['text', 'number', 'integer', 'boolean'],
+      },
+    },
+    required: true,
+    default: '',
+    description: `The description of the input field.`,
+  },
+  {
+    displayName: 'Input field required',
+    name: 'commandFieldRequired',
+    type: 'boolean',
+    displayOptions: {
+      show: {
+        type: ['command'],
+        commandFieldType: ['text', 'number', 'integer', 'boolean'],
+      },
+    },
+    required: false,
+    default: false,
+    description: `If the input field is required or not.`,
   },
   {
     displayName: 'Case Sensitive',

@@ -5,6 +5,8 @@ import {
   SlashCommandBooleanOption,
   SlashCommandStringOption,
   RESTPostAPIApplicationCommandsJSONBody,
+  SlashCommandNumberOption,
+  SlashCommandIntegerOption,
 } from 'discord.js';
 import { addLog } from '../helpers';
 import state from '../state';
@@ -50,42 +52,37 @@ export default async function (ipc: typeof Ipc, client: Client) {
             let slashCommand: any = new SlashCommandBuilder()
               .setName(params.name)
               .setDescription(params.description)
-              .setDMPermission(false)
+              .setDMPermission(false);
 
-            if(params.commandFieldType === 'number') {
-              slashCommand = slashCommand.addNumberOption((option: any) =>
-                option
-                  .setName('input')
-                  .setMinValue(1)
-                  .setMaxValue(10)
-                  .setDescription(params.commandFieldDescription ?? '')
-                  .setRequired(params.commandFieldRequired ?? false),
-              )
-            } else if(params.commandFieldType === 'integer') {
-              slashCommand = slashCommand.addIntegerOption((option: any) =>
-                option
-                  .setName('input')
-                  .setMinValue(1)
-                  .setMaxValue(10)
-                  .setDescription(params.commandFieldDescription ?? '')
-                  .setRequired(params.commandFieldRequired ?? false),
-              )
-            } else if(params.commandFieldType === 'boolean') {
-              slashCommand = slashCommand.addBooleanOption((option: SlashCommandBooleanOption) =>
-                option
-                  .setName('input')
-                  .setDescription(params.commandFieldDescription ?? '')
-                  .setRequired(params.commandFieldRequired ?? false),
-              )
-            } else {
-              slashCommand = slashCommand.addStringOption((option: SlashCommandStringOption) =>
-                option
-                  .setName('input')
-                  .setDescription(params.commandFieldDescription ?? '')
-                  .setMinLength(1)
-                  .setMaxLength(2000)
-                  .setRequired(params.commandFieldRequired ?? false),
-              )
+            const getOption = (
+              option:
+                | SlashCommandStringOption
+                | SlashCommandNumberOption
+                | SlashCommandIntegerOption
+                | SlashCommandBooleanOption,
+            ) => {
+              return option
+                .setName('input')
+                .setDescription(params.commandFieldDescription)
+                .setRequired(params.commandFieldRequired ?? false);
+            };
+
+            if (params.commandFieldType === 'text') {
+              slashCommand = slashCommand.addStringOption((option: SlashCommandStringOption) => {
+                return getOption(option);
+              });
+            } else if (params.commandFieldType === 'number') {
+              slashCommand = slashCommand.addNumberOption((option: SlashCommandNumberOption) => {
+                return getOption(option);
+              });
+            } else if (params.commandFieldType === 'integer') {
+              slashCommand = slashCommand.addIntegerOption((option: SlashCommandIntegerOption) => {
+                return getOption(option);
+              });
+            } else if (params.commandFieldType === 'boolean') {
+              slashCommand = slashCommand.addBooleanOption((option: SlashCommandBooleanOption) => {
+                return getOption(option);
+              });
             }
 
             parsedCommands.push(slashCommand.toJSON());

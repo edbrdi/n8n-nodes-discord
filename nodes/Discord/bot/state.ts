@@ -16,6 +16,9 @@ const state: {
       value?: string;
       name?: string;
       description?: string;
+      commandFieldType?: string;
+      commandFieldDescription?: string;
+      commandFieldRequired?: boolean;
       caseSensitive?: boolean;
       botMention?: boolean;
       placeholder?: string;
@@ -35,6 +38,9 @@ const state: {
         value?: string;
         name?: string;
         description?: string;
+        commandFieldType?: string;
+        commandFieldDescription?: string;
+        commandFieldRequired?: boolean;
         caseSensitive?: boolean;
         botMention?: boolean;
         placeholder?: string;

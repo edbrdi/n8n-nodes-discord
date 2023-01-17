@@ -16,6 +16,7 @@ import guildMemberAddEvent from './discordClientEvents/guildMemberAdd.event';
 import guildMemberRemoveEvent from './discordClientEvents/guildMemberRemove.event';
 import messageCreateEvent from './discordClientEvents/messageCreate.event';
 import interactionCreateEventUI from './discordClientEvents/interactionCreateUI.event';
+import interactionCreateEventCmd from './discordClientEvents/interactionCreateCmd.event';
 
 export default function () {
   const client = new Client({
@@ -55,6 +56,9 @@ export default function () {
 
   // the bot listen to all interactions (button/select) and check if it matches a waiting prompt
   interactionCreateEventUI(client);
+
+  // the bot listen to all interactions (slash commands) and check if it matches a referenced trigger
+  interactionCreateEventCmd(client);
 
   ipc.config.id = 'bot';
   ipc.config.retry = 1500;
