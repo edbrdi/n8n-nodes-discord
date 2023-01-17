@@ -71,6 +71,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **From roles**: The same logic apply here for roles, except it is optional. If you don't select any role it will listen to **@everyone**.
 - **Trigger type**: Type of event to listen to. User events must specify a channel to listen to if you want to use a placeholder or the option "send to the trigger channel" in a Discord Send node.
   - **Message**: Listen to messages sent in the selected channels.
+  - **Command**: Listen to commands sent in the selected channels.
   - **Interaction**: Listen to persisted button/select.
   - **User joins**: Listen to users joining the server.
   - **User leaves**: Listen to users leaving the server.
@@ -94,6 +95,11 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **Value**: Message only. The value you will test on all messages listened to.
 - **Case Sensitive**: Message only. Determine if it will be sensible to the case when matching the value.
 - **Bot mention**: Message only. If true, a message will also need to mention the bot to trigger the workflow (this does not exclude the other criteria).
+- **Name**: Command only. The name of the command to listen to.
+- **Description**: Command only. The description of the command to listen to.
+- **Input field type**: Command only. The type of the input field.
+- **Input field description**: Command only. The description of the input field.
+- **Input field required**: Command only. If the input field is required.
 - **Placeholder**: The placeholder is a message that will appear in the channel that triggers the workflow. Three animated dots added to the placeholder indicate that the workflow is running. From a Discord Send node, you can set up a response message which will then take the place of this placeholder.
 
 /!\ Don't forget to activate your trigger, even if you just want to test it.
@@ -105,6 +111,7 @@ Now you will be able to use the **Discord Trigger** and **Discord Send** nodes o
 - **userId**: The triggering user ID.
 - **userName**: The triggering username.
 - **userTag**: The triggering user tag.
+- **interactionValues**: The triggering interaction values (if type interaction).
 - **messageId**: The triggering message ID (if type message).
 - **presence**: The triggering presence status (if type presence update).
 - **addedRoles**: The triggering added role (if type role added).

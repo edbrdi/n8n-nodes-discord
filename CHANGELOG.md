@@ -1,8 +1,10 @@
 # Changelog
 
-## Released (2023-01-?? 0.5.0)
+## Released (2023-01-18 0.5.0)
 
 ### New Features
+
+- Trigger workflow using slash commands (can be restricted to specific roles, pass a parameter)
 
 ### Improvements/refactoring
 

@@ -24,7 +24,13 @@ export default async function (client: Client) {
             if (trigger.type === 'command') {
               if (trigger.roleIds.length) {
                 const hasRole = trigger.roleIds.some((role) => userRoles?.includes(role));
-                if (!hasRole) return;
+                if (!hasRole) {
+                  interaction
+                    .reply({ content: 'You do not have permission', ephemeral: true })
+                    .catch((e) => e);
+
+                  return;
+                }
               }
               if (trigger.name === interaction.commandName) {
                 addLog(`triggerWorkflow ${trigger.webhookId}`, client);
