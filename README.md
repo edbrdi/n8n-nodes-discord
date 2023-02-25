@@ -1,10 +1,14 @@
-# n8n-nodes-discord
+<h1 align="center">n8n-nodes-discord</h1>
 
-![n8n.io - Workflow Automation](https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png" alt="n8n.io - Workflow Automation">
+</p>
 
-[n8n](https://www.n8n.io) nodes to trigger workflows from Discord or send interactive messages. Uses the components API which allows to create dialogs (e.g. attach buttons and wait for the user to click on them).
+<p align="center">n8n <a href="https://www.n8n.io">nodes</a> to trigger workflows from Discord or send interactive messages. <br>
+Uses the components API which allows to create dialogs (e.g. attach buttons and wait for the user to click on them).</p>
 
-These nodes do not use webhooks but a Discord bot to enable two-way communication. The bot automatically launches into a main process once configured and transmits or receives data from child processes when a node is executed.
+<p align="center">These nodes do not use webhooks but a Discord bot to enable two-way communication. <br>
+The bot automatically launches into a main process once configured and transmits or receives data from child processes when a node is executed.</p>
 
 ## How to install
 
